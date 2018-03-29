@@ -1,0 +1,95 @@
+<?php
+#parse("PHP File Header.php")
+#set( $CONTRA_BARRA = "\" )
+namespace App\Http\Controllers$CONTRA_BARRA${NAMESPACE};
+
+use App\Http\Resources$CONTRA_BARRA${MODEL}Resource;
+use App\Services$CONTRA_BARRA${MODEL}Service;
+use App\Http\Requests\Request;
+use App\Http\Controllers\Controller;
+
+class ${MODEL}Controller extends Controller
+{
+    private ${DS}${LOWER_CASE}Service;
+
+    /**
+     * ${MODEL}Controller constructor.
+     * @param ${MODEL}Service ${LOWER_CASE}Service
+     */
+    public function __construct(${MODEL}Service ${DS}${LOWER_CASE}Service)
+    {
+        \$this->${LOWER_CASE}Service = ${DS}${LOWER_CASE}Service;
+    }
+
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return ${MODEL}Collection
+     * @throws \Exception
+     */
+    public function index(Request \$request) : ${MODEL}Resource
+    {
+
+        \$model = \$this->${LOWER_CASE}Service->index(\$request->toCollection())->paginate(5);
+
+        return new ${MODEL}Collection(\$model);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param Request \$request
+     * @return ${MODEL}Resource
+     * @throws \Exception
+     * @throws \Throwable
+     */
+    public function store(Request \$request) : ${MODEL}Resource
+    {
+        \$model = \$this->${LOWER_CASE}Service->store(\$request->toCollection());
+
+        return new ${MODEL}Resource(\$model);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  \$id
+     * @return ${MODEL}Resource
+     */
+    public function show(int \$id) : ${MODEL}Resource
+    {
+        \$model = \$this->${LOWER_CASE}Service->show(\$id);
+
+        return new ${MODEL}Resource(\$model);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param Request \$request
+     * @param  int \$id
+     * @return ${MODEL}Resource
+     * @throws \Exception
+     */
+    public function update(Request \$request, int \$id) : ${MODEL}Resource
+    {
+        \$model = \$this->${LOWER_CASE}Service->update(\$request->toCollection(), \$id);
+
+        return new ${MODEL}Resource(\$model);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int \$id
+     * @return ${MODEL}Resource
+     * @throws \Exception
+     */
+    public function destroy(int \$id) : ${MODEL}Resource
+    {
+        \$model = \$this->${LOWER_CASE}Service->delete(\$id);
+
+        return new ${MODEL}Resource(\$model);
+    }
+}

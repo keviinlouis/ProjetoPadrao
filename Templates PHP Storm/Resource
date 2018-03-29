@@ -1,0 +1,19 @@
+<?php
+#parse("PHP File Header.php")
+#set( $CONTRA_BARRA = "\" )
+namespace App\Http\Resources;
+
+
+use Illuminate\Database\Eloquent$CONTRA_BARRA${MODEL};
+
+class ${MODEL}Resource extends Resource
+{
+    /**
+     * @param ${MODEL} $resource
+     * @return array
+     */
+    public function toResource($resource)
+    {
+       return $resource->toArray();
+    }
+}

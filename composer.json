@@ -1,0 +1,80 @@
+{
+    "name": "laravel/laravel",
+    "description": "The Laravel Framework.",
+    "keywords": ["framework", "laravel"],
+    "license": "MIT",
+    "type": "project",
+    "require": {
+        "php": ">=7.1.3",
+        "brozot/laravel-fcm": "^1.2",
+        "doctrine/dbal": "^2.6",
+        "fideloper/proxy": "~4.0",
+        "fzaninotto/faker": "^1.7",
+        "intervention/image": "^2.4",
+        "laravel/framework": "5.6.*",
+        "laravel/tinker": "~1.0",
+        "laravelcollective/html": "^5.4.0",
+        "laravellegends/pt-br-validator": "5.1.*",
+        "malhal/laravel-geographical": "^1.0",
+        "moip/moip-sdk-php": "^3.0",
+        "tymon/jwt-auth": "dev-develop",
+        "yajra/laravel-datatables-oracle": "^8.3",
+        "rap2hpoutre/laravel-log-viewer": "^0.11.0"
+    },
+    "require-dev": {
+        "reliese/laravel": "^0.0.13",
+        "orangehill/iseed": "dev-master",
+        "barryvdh/laravel-ide-helper": "^2.4",
+        "filp/whoops": "~2.0",
+        "mockery/mockery": "~1.0",
+        "nunomaduro/collision": "~1.1",
+        "phpunit/phpunit": "~7.0",
+        "symfony/thanks": "^1.0",
+        "xethron/migrations-generator": "^2.0"
+    },
+    "autoload": {
+        "classmap": [
+            "database/seeds",
+            "database/factories"
+        ],
+        "psr-4": {
+            "App\\": "app/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "dont-discover": [
+            ]
+        }
+    },
+    "scripts": {
+        "post-create-project-cmd": [
+            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
+            "@php artisan key:generate",
+            "@php artisan jwt:generate"
+        ],
+        "post-autoload-dump": [
+            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
+            "@php -r \"file_exists('storage/logs/laravel.log') || fopen('storage/logs/laravel.log', 'x+');\"",
+            "@php -r \"file_exists('storage/logs/moip.log') || fopen('storage/logs/moip.log', 'x+');\"",
+            "@php -r \"file_exists('storage/logs/exceptions.log') || fopen('storage/logs/exceptions.log', 'x+');\"",
+            "@php -r \"file_exists('storage/logs/recuperacao_senha.log') || fopen('storage/logs/recuperacao_senha.log', 'x+');\"",
+            "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
+            "@php artisan package:discover",
+            "@php artisan ide-helper:generate",
+            "@php artisan ide-helper:models -W"
+        ]
+    },
+    "config": {
+        "preferred-install": "dist",
+        "sort-packages": true,
+        "optimize-autoloader": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

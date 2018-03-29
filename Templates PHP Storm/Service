@@ -1,0 +1,160 @@
+<?php
+#parse("PHP File Header.php")
+#set( $CONTRA_BARRA = "\" )
+
+namespace App\Services;
+
+use App\Entities$CONTRA_BARRA${MODEL};
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Collection;
+use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+
+/**
+ * Class ${MODEL}Service
+ * @package App\Services
+ */
+class ${NAME} extends Service
+{
+    public \$relations;
+
+    public \$relationsCount;
+
+    /**
+     * ${MODEL}Service constructor.
+     */
+    public function __construct()
+{
+    \$this->relations = [];
+        \$this->relationsCount = [];
+    }
+
+
+    /**
+     * Listagem de ${MODEL}
+     * @param Collection \$filters
+     * @return \Illuminate\Database\Eloquent\Builder
+     * @throws Exception
+     */
+    public function index(Collection \$filters = null) : Builder
+    {
+        if(!\$filters){
+            \$filters = collect();
+        }
+        
+        \$this->validateWithArray(\$filters->toArray(), \$this->indexRules());
+
+        \$query = ${MODEL}::with(\$this->relations);
+
+        \$order = \$filters->has('desc') && \$filters->get('desc', false) ? 'desc' : 'asc';
+        
+        \$sortBy = \$filters->get('sort', 'id');
+        
+        \$limit = \$filters->get('limit', 15);
+        
+        \$query->orderBy(\$sortBy, \$order);
+        
+        return \$limit > 0 ? \$query->paginate(\$limit) : \$query->get();
+    }
+
+    /**
+     * Visualizar ${MODEL} pelo id
+     * @param int|${MODEL} \$model
+     * @return ${MODEL}
+     * @throws ModelNotFoundException
+     */
+    public function show(\$model) : ${MODEL}
+    {
+        if(!\$model instanceof ${MODEL}){
+            \$model = ${MODEL}::whereId(\$model)->firstOrFail();
+        }
+
+        return \$model->load(\$this->relations);
+    }
+
+    /**
+     * Criar ${MODEL}
+     * @param Collection \$data
+     * @return ${MODEL}
+     * @throws Exception
+     */
+    public function store(Collection \$data) : ${MODEL}
+    {
+        \$this->validateWithArray(\$data->toArray(), \$this->storeRules());
+
+        \$model = ${MODEL}::create(\$data->all());
+
+        return \$this->show(\$model);
+    }
+
+
+    /**
+     * Atualizar ${MODEL}
+     * @param Collection \$data
+     * @param int|${MODEL} \$id
+     * @throws ModelNotFoundException
+     * @throws Exception
+     * @return ${MODEL}
+     */
+    public function update(Collection \$data, \$id) : ${MODEL}
+    {
+        \$this->validateWithArray(\$data->toArray(), \$this->updateRules());
+
+        \$model = \$this->show(\$id);
+
+        \$model->update(\$data->all());
+
+        return \$this->show(\$model);
+    }
+
+    /**
+     * Deletar ${MODEL}
+     * @param int|${MODEL} \$id
+     * @return ${MODEL}
+     * @throws ModelNotFoundException
+     * @throws Exception
+     */
+    public function delete(\$id) : ${MODEL}
+    {
+        \$model = \$this->show(\$id);
+
+        \$model->delete();
+
+        return \$model;
+    }
+ #if (${WITH_RULES} == "TRUE" || ${WITH_RULES} == "true" || ${WITH_RULES} == "1")
+    /**
+     * Regras para a listagem de ${MODEL}
+     * @return array
+     */
+    protected function indexRules() : array
+    {
+        return [
+            //TODO Implementar index Rules
+        ];
+    }
+
+    /**
+     * Regras para criação de ${MODEL}
+     * @return array
+     */
+    protected function storeRules() : array
+    {
+        return [
+            //TODO Implementar store Rules
+        ];
+    }
+
+    /**
+     * Regras para alteração de ${MODEL}
+     * @return array
+     */
+    protected function updateRules() : array
+    {
+        return [
+            //TODO Implementar update Rules
+        ];
+    }
+
+#end
+}
