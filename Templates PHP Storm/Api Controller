@@ -25,7 +25,8 @@ class ${MODEL}Controller extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return ${MODEL}Collection
+     * @param Request \$request
+     * @return ${MODEL}Resource
      * @throws \Exception
      */
     public function index(Request \$request) : ${MODEL}Resource
@@ -33,7 +34,7 @@ class ${MODEL}Controller extends Controller
 
         \$model = \$this->${LOWER_CASE}Service->index(\$request->toCollection())->paginate(5);
 
-        return new ${MODEL}Collection(\$model);
+        return new ${MODEL}Resource(\$model);
     }
 
     /**

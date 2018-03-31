@@ -13,7 +13,7 @@ abstract class Resource extends JsonResource
 
     /**
      * Resource constructor.
-     * @param $resource Collection|LengthAwarePaginator|Model
+     * @param $resource Collection|LengthAwarePaginator|Model|Model[]
      */
     public function __construct($resource)
     {

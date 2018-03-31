@@ -4,16 +4,16 @@
 namespace App\Http\Resources;
 
 
-use Illuminate\Database\Eloquent$CONTRA_BARRA${MODEL};
+use App\Entities$CONTRA_BARRA${MODEL};
 
 class ${MODEL}Resource extends Resource
 {
     /**
-     * @param ${MODEL} $resource
+     * @param ${MODEL} \$resource
      * @return array
      */
-    public function toResource($resource)
+    public function toResource(\$resource)
     {
-       return $resource->toArray();
+       return \$resource->toArray();
     }
 }
