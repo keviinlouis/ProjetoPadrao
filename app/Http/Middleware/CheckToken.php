@@ -19,16 +19,22 @@ class CheckToken extends BaseMiddleware
      * @param  \Closure $next
      * @param null $guard
      * @return mixed
+     * @throws \Exception
      */
     public function handle($request, \Closure $next, $guard = null)
     {
         $this->checkForToken($request); // Ver se tem o token
-        if($guard){
-            Config::set('auth.defaults.guard', $guard);
+
+        if(!$guard){
+            throw new \Exception('Guard inválido', 500);
         }
+
+        Config::set('auth.defaults.guard', $guard);
+
         try {
-            $id = $this->auth->parseToken()->getPayload()['sub'];
-            if (!auth()->guard($guard)->onceUsingId($id)) { // Check user not found. Check token has expired.
+            $user = $this->auth->parseToken()->getPayload()['sub'];
+
+            if (!$this->checkModels($user->class, $guard) || !auth()->guard($guard)->onceUsingId($user->id)) { // Check user not found. Check token has expired.
                 throw new UnauthorizedHttpException('jwt-auth', 'Usuario não encontrado'); //Se der problema com o token, virá um header chamado WWW-Authenticate com o valor de jwt-auth
             }
             return $next($request); // Se o usuario for autenticado e logado com token válido, continua request
@@ -49,5 +55,21 @@ class CheckToken extends BaseMiddleware
         } catch (JWTException $e) {
             throw new UnauthorizedHttpException('jwt-auth', 'Token Inválido', $e, Response::HTTP_UNAUTHORIZED); //Se der problema com o token, virá um header chamado WWW-Authenticate com o valor de jwt-auth
         }
+    }
+
+    public function getClassBybGuard($guard)
+    {
+        $provider = config('auth.guards.'.$guard.'.provider');
+        $class = config('auth.providers.'.$provider.'.model');
+
+        return $class;
+
+    }
+
+    public function checkModels($class, $guard)
+    {
+       $classAuth = $this->getClassBybGuard($guard);
+
+       return $classAuth == $class;
     }
 }

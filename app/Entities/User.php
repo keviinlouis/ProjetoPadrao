@@ -12,14 +12,17 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 
 abstract class User extends Authenticatable implements JWTSubject
 {
-	use SoftDeletes, AttributesMasks, Senha, Files, FotoPerfil;
+	use SoftDeletes, AttributesMasks, Senha, Files;
 
     /**
      * @return mixed
      */
     public function getJWTIdentifier()
     {
-        return $this->getKey();
+        return [
+            'id' => $this->getKey(),
+            'class' => $this->getClassAuth()
+        ];
     }
 
     /**
@@ -29,4 +32,6 @@ abstract class User extends Authenticatable implements JWTSubject
     {
         return [];
     }
+
+    abstract function getClassAuth():string;
 }

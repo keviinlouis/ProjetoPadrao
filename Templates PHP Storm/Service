@@ -5,7 +5,9 @@
 namespace App\Services;
 
 use App\Entities$CONTRA_BARRA${MODEL};
-use Illuminate\Database\Eloquent\Builder;
+#if (${IS_AUTH} == "TRUE" || ${IS_AUTH} == "true" || ${IS_AUTH} == "1")
+use Illuminate\Http\Response;
+#end
 use Illuminate\Support\Collection;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -33,27 +35,27 @@ class ${NAME} extends Service
     /**
      * Listagem de ${MODEL}
      * @param Collection \$filters
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return ${MODEL}[]|\Illuminate\Contracts\Pagination\LengthAwarePaginator
      * @throws Exception
      */
-    public function index(Collection \$filters = null) : Builder
+    public function index(Collection \$filters = null)
     {
         if(!\$filters){
             \$filters = collect();
         }
-        
+
         \$this->validateWithArray(\$filters->toArray(), \$this->indexRules());
 
         \$query = ${MODEL}::with(\$this->relations);
 
-        \$order = \$filters->has('desc') && \$filters->get('desc', false) ? 'desc' : 'asc';
-        
+        \$order = \$filters->get('desc', false) ? 'desc' : 'asc';
+
         \$sortBy = \$filters->get('sort', 'id');
-        
+
         \$limit = \$filters->get('limit', 15);
-        
+
         \$query->orderBy(\$sortBy, \$order);
-        
+
         return \$limit > 0 ? \$query->paginate(\$limit) : \$query->get();
     }
 
@@ -122,7 +124,55 @@ class ${NAME} extends Service
 
         return \$model;
     }
- #if (${WITH_RULES} == "TRUE" || ${WITH_RULES} == "true" || ${WITH_RULES} == "1")
+#if (${IS_AUTH} == "TRUE" || ${IS_AUTH} == "true" || ${IS_AUTH} == "1")
+    /**
+     * @param Collection \$data
+     * @return ${MODEL}
+     * @throws Exception
+     * @throws \Throwable
+     */
+    public function login(Collection \$data): ${MODEL}
+    {
+        \$this->validateWithArray(\$data, \$this->loginRules());
+#if (${WITH_FACEBOOK} == "TRUE" || ${WITH_FACEBOOK} == "true" || ${WITH_FACEBOOK} == "1")
+        if (\$facebook_id = \$data->get('facebook_id')) {
+            \$model = ${MODEL}::whereFacebookId(\$facebook_id)->first();
+
+            return \$model;
+        }
+#end
+        \$model = ${MODEL}::whereEmail(\$data->get('email'))->first();
+
+        throw_if(
+            !\$model->checkSenha(\$data->get('senha')),
+            \Exception::class,
+            'Senha inválida',
+            Response::HTTP_UNAUTHORIZED
+        );
+
+        return \$model;
+    }
+
+    /**
+     * @return array
+     */
+    public function loginRules(): array
+    {
+        return [
+
+#if (${WITH_FACEBOOK} == "TRUE" || ${WITH_FACEBOOK} == "true" || ${WITH_FACEBOOK} == "1")
+            'email' => 'required_without:facebook_id|string|exists:'.(new ${MODEL})->getTable(),
+            'senha' => 'required_without:facebook_id|string',
+            'facebook_id' => 'required_without:email|required_without:senha|string|exists:'.(new ${MODEL})->getTable()
+#else
+            'email' => 'required|string|exists:'.(new ${MODEL})->getTable(),
+            'senha' => 'required|string',
+#end
+        ];
+    }
+#end
+
+#if (${WITH_RULES} == "TRUE" || ${WITH_RULES} == "true" || ${WITH_RULES} == "1")
     /**
      * Regras para a listagem de ${MODEL}
      * @return array

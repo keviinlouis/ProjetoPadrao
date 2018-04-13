@@ -31,9 +31,9 @@ class ObserversProvider extends ServiceProvider
      */
     public function boot()
     {
-        Arquivo::observe(ArquivosObserver::class);
-        Mensagem::observe(MensagensObserver::class);
-        Pagamento::observe(PagamentosObserver::class);
+//        Arquivo::observe(ArquivosObserver::class);
+//        Mensagem::observe(MensagensObserver::class);
+//        Pagamento::observe(PagamentosObserver::class);
     }
 
     /**

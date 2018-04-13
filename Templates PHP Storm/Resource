@@ -8,12 +8,21 @@ use App\Entities$CONTRA_BARRA${MODEL};
 
 class ${MODEL}Resource extends Resource
 {
+#if (${IS_AUTH} == "TRUE" || ${IS_AUTH} == "true" || ${IS_AUTH} == "1")
+    public function __construct(\$resource, \$withToken = false)
+    {
+        parent::__construct(\$resource);
+        \$this->withToken = \$withToken;
+    }
+#end
     /**
      * @param ${MODEL} \$resource
      * @return array
      */
     public function toResource(\$resource)
     {
-       return \$resource->toArray();
+       \$data = \$resource->toArray();
+
+       return \$data;
     }
 }

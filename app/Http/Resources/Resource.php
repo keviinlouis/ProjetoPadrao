@@ -3,13 +3,14 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 abstract class Resource extends JsonResource
 {
     private $isCollection;
+    protected $withToken = false;
 
     /**
      * Resource constructor.
@@ -41,6 +42,10 @@ abstract class Resource extends JsonResource
 
         if ($this->resource instanceof LengthAwarePaginator) {
             $response = $this->extractPaginator($response);
+        }
+
+        if($this->withToken && !$this->isCollection){
+            $response['token'] = \JWTAuth::fromUser($this->resource);
         }
 
 
