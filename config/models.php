@@ -211,7 +211,7 @@ return [
         */
 
         'hidden' => [
-            '*secret*', '*password', '*token',
+            '*secret*', '*password', '*senha',
         ],
 
         /*

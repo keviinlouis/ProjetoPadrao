@@ -36,15 +36,13 @@ return [
     */
 
     'guards' => [
-        'admin' => [
-            'driver' => 'jwt',
-            'provider' => 'admin'
-        ],
+        //'admin' => [
+        //    'driver' => 'jwt',
+        //    'provider' => 'admin'
+        //],
 
-        'dono' => [
-            'driver' => 'jwt',
-            'provider' => 'donos',
-        ],
+        // TODO Criar Guards para cada tipo de usuario
+        // Ao criar uma guard, adicione as routas na middleware "jwt:guard" com a guard correspondente, por exemplo "jwt:admin"
     ],
 
     /*
@@ -65,15 +63,11 @@ return [
     */
 
     'providers' => [
-        'donos' => [
-            'driver' => 'eloquent',
-            'model' => App\Entities\Dono::class,
-        ],
-
-         'admin' => [
-             'driver' => 'eloquent',
-             'model' => App\Entities\Administrador::class,
-         ],
+         //'admin' => [
+         //    'driver' => 'eloquent',
+         //    'model' => App\Entities\Administrador::class,
+         //],
+        // TODO Crie seu provider de acordo com a classe acessavel do sistema
     ],
 
     /*
@@ -92,16 +86,11 @@ return [
     */
 
     'passwords' => [
-        'donos' => [
-            'provider' => 'donos',
-            'table' => 'recuperacao_senha_donos',
-            'expire' => 60,
-        ],
-        'admin' => [
-            'provider' => 'admin',
-            'table' => 'recuperacao_senha_administradores',
-            'expire' => 60,
-        ],
+        //'admin' => [
+        //    'provider' => 'admin',
+        //    'table' => 'recuperacao_senha_administradores',
+        //    'expire' => 60,
+        //],
     ],
 
 ];
