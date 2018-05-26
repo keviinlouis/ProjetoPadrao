@@ -1,6 +1,11 @@
 {
   "estados": [
     {
+      "sigla": "Todos",
+      "nome": "Todos",
+      "cidades": ["Todas"]
+    },
+    {
       "sigla": "AC",
       "nome": "Acre",
       "cidades": [

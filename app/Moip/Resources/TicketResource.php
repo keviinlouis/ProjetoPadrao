@@ -22,7 +22,7 @@ class TicketResource extends Resource
      */
     public function __construct(array $instructions)
     {
-        $this->expiration_date = \Carbon\Carbon::now()->addDays(3)->toDateString();
+        $this->expiration_date = \Carbon\Carbon::now()->addDays(env('MOIP_TICKET_EXPIRATION_DAYS', 3))->toDateString();
 
         $this->logo_uri = env('MOIP_TICKET_LOGO');
 

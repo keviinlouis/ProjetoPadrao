@@ -9,7 +9,7 @@
 namespace App\Moip\Services;
 
 use App\Moip\Exceptions\MoipIdException;
-use App\Moip\Resources\BillingAddressResource;
+use App\Moip\Exceptions\MoipValidatorException;
 use App\Moip\Resources\CreditCardResource;
 use App\Moip\Resources\CustomerResource;
 use App\Moip\Resources\DocumentResource;
@@ -19,19 +19,20 @@ use App\Moip\Resources\PhoneResource;
 use App\Moip\Resources\ProductResource;
 use App\Moip\Resources\ShippingAddressResource;
 use GuzzleHttp\Client;
-use Illuminate\Database\Eloquent\Model;
 use Moip\Auth\BasicAuth;
+use Moip\Exceptions\ValidationException;
 use Moip\Moip;
-use Moip\Resource\Holder;
+use Moip\Resource\Orders;
+use Moip\Resource\Payment;
 
 /**
  * Class Service
  * @package App\Moip\Services
+ * @property CustomerResource $customer
  */
 abstract class Service
 {
     /**
-     * @var $customer CustomerResource
      * @var $moip Moip
      */
     protected $moip;
@@ -49,6 +50,18 @@ abstract class Service
     protected $endpoint;
     protected $key;
     protected $token;
+
+    /**
+     * MoipService constructor.
+     */
+    public function __construct()
+    {
+        $this->token = env('MOIP_TOKEN');
+        $this->key = env('MOIP_KEY');
+        $this->endpoint = env('MOIP_HOMOLOGATED', false) ? Moip::ENDPOINT_PRODUCTION : Moip::ENDPOINT_SANDBOX;
+
+        $this->moip = new Moip(new BasicAuth($this->token, $this->key), $this->endpoint);
+    }
 
     /**
      * @param $order
@@ -83,22 +96,10 @@ abstract class Service
      */
     abstract public function transformProduct($product);
 
-
-    /**
-     * MoipService constructor.
-     */
-    public function __construct()
-    {
-        $this->token = env('MOIP_TOKEN');
-        $this->key = env('MOIP_KEY');
-        $this->endpoint = env('MOIP_HOMOLOGATED', false) ? Moip::ENDPOINT_PRODUCTION : Moip::ENDPOINT_SANDBOX;
-
-        $this->moip = new Moip(new BasicAuth($this->token, $this->key), $this->endpoint);
-    }
-
     /**
      * @return $this|\Moip\Resource\Orders|\stdClass
      * @throws MoipIdException
+     * @throws \Exception
      */
     public function createOrder()
     {
@@ -121,14 +122,24 @@ abstract class Service
             $this->order->moipOrder = $order;
 
             return $this->order;
-        } catch (\Exception $e) {
-            dd($e);
+        } catch (ValidationException $e) {
+            throw new MoipValidatorException($e);
         }
 
     }
 
     /**
+     * @param $moipKey
+     * @return \Moip\Resource\Customer|\stdClass
+     */
+    public function getCustomerOnMoip($moipKey)
+    {
+        return $this->moip->customers()->get($moipKey);
+    }
+
+    /**
      * @return CustomerResource
+     * @throws \Exception
      */
     public function createCustomer()
     {
@@ -178,18 +189,20 @@ abstract class Service
         }
         try {
             $this->customer->moipId = $moipBuyer->create()->getId();
-        } catch (\Exception $e) {
-            dd($e);
+        } catch (ValidationException $e) {
+            throw new MoipValidatorException($e);
         }
 
         return $this->customer;
     }
 
     /**
-     * @return mixed
+     * @return Payment
+     * @throws MoipValidatorException
      */
     public function createPayment()
     {
+        /** @var Orders $order */
         $order = $this->getOrderOnMoip($this->order->moipId);
 
         if ($this->creditCard) {
@@ -208,20 +221,17 @@ abstract class Service
             $payment = $order->payments()
                 ->setBoleto($this->ticket->expiration_date, $this->ticket->logo_uri, $this->ticket->instruction_lines);
         }
-        $payment = $payment->execute();
-        $this->payment = $payment;
+        try {
 
-        return $this->payment;
+            /** @var Payment $payment */
+            $payment = $payment->execute();
 
-    }
+            $this->payment = $payment;
 
-    /**
-     * @param $moipKey
-     * @return \Moip\Resource\Customer|\stdClass
-     */
-    public function getCustomerOnMoip($moipKey)
-    {
-        return $this->moip->customers()->get($moipKey);
+            return $this->payment;
+        } catch (ValidationException $e) {
+            throw new MoipValidatorException($e);
+        }
     }
 
     /**
@@ -234,51 +244,15 @@ abstract class Service
     }
 
     /**
-     * @param Model $model
-     * @param CustomerResource $customer
-     * @throws MoipIdException
-     */
-    public function createCreditCard(Model $model, CustomerResource $customer)
-    {
-        if (!$customer->hasMoipId()) {
-            throw new MoipIdException($customer);
-        }
-        $card = $this->transformCard($model);
-
-        $this->moip->customers()->creditCard()
-            ->setExpirationMonth($card->expirationMonth)
-            ->setExpirationYear($card->expirationYear)
-            ->setNumber($card->number)
-            ->setCVC($card->cvc)
-            ->setFullName($card->holder->fullName)
-            ->setBirthDate($card->holder->birthDate)
-            ->setTaxDocument($card->taxDocument->type, $card->taxDocument->number)
-            ->setPhone($card->phone->countryCode, $card->phone->areaCode, $card->phone->number)
-            ->create($customer->moipId);
-    }
-
-    /**
-     * @param CreditCardResource $creditCard
-     * @throws MoipIdException
-     */
-    public function removeCreditCard(CreditCardResource $creditCard)
-    {
-        if (!$creditCard->hasMoipId()) {
-            throw new MoipIdException($creditCard);
-        }
-        $this->moip->customers()->creditCard()->delete($creditCard->moipId);
-    }
-
-    /**
      * @param $events
      * @param $link
      */
     public function createWebhook(array $events, string $link)
     {
         $http = new Client();
-        $response = $http->post($this->endpoint.'/v2/preferences/notifications', [
+        $response = $http->post($this->endpoint . '/v2/preferences/notifications', [
             'headers' => [
-                'Authorization' => 'Basic ' .base64_encode($this->token.':'.$this->key),
+                'Authorization' => 'Basic ' . base64_encode($this->token . ':' . $this->key),
                 'Content-Type' => 'application/json'
             ],
             'json' => [
@@ -298,12 +272,12 @@ abstract class Service
     {
         $webhooks = $this->getWebhooksOnMoip();
         $removeu = false;
-        foreach($webhooks as $webhook){
-            if($webhook->target === $link || strpos($webhook->target, 'localhost')){
+        foreach ($webhooks as $webhook) {
+            if ($webhook->target === $link || strpos($webhook->target, 'localhost')) {
                 $http = new Client();
-                $response = $http->delete($this->endpoint.'/v2/preferences/notifications/'.$webhook->id, [
+                $response = $http->delete($this->endpoint . '/v2/preferences/notifications/' . $webhook->id, [
                     'headers' => [
-                        'Authorization' => 'Basic ' .base64_encode($this->token.':'.$this->key),
+                        'Authorization' => 'Basic ' . base64_encode($this->token . ':' . $this->key),
                         'Content-Type' => 'application/json'
                     ]
                 ]);

@@ -27,6 +27,7 @@ class CreditCardResource extends Resource
 
     /**
      * CreditCardResource constructor.
+     *
      * @param HolderResource $holder
      * @param $parcelas
      * @param $hash

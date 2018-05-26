@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Entities\User;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
@@ -44,7 +45,7 @@ abstract class Resource extends JsonResource
             $response = $this->extractPaginator($response);
         }
 
-        if($this->withToken && !$this->isCollection){
+        if($this->withToken && !$this->isCollection && $this->resource instanceof User){
             $response['token'] = \JWTAuth::fromUser($this->resource);
         }
 

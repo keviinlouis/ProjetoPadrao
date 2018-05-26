@@ -4,7 +4,6 @@ namespace App\Entities;
 
 use App\Traits\AttributesMasks;
 use App\Traits\Files;
-use App\Traits\FotoPerfil;
 use App\Traits\Senha;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;

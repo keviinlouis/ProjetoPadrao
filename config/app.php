@@ -153,13 +153,13 @@ return [
         LaravelLegends\PtBrValidator\ValidatorProvider::class,
         Intervention\Image\ImageServiceProvider::class,
         LaravelFCM\FCMServiceProvider::class,
+        \App\Moip\Providers\MoipServiceProvider::class,
         /*
          * Application Service Providers...
          */
         App\Providers\AppServiceProvider::class,
         App\Providers\ValidatorProvider::class,
         App\Providers\ObserversProvider::class,
-        App\Providers\FormCollectiveProvider::class,
         App\Providers\AuthServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,

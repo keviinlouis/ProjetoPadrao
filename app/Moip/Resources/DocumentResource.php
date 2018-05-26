@@ -17,6 +17,7 @@ class DocumentResource extends Resource
 {
     CONST CPF = 'CPF';
     CONST RG = 'RG';
+    CONST CNPJ = 'CNPJ';
 
     public $type;
     public $number;

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Criado através de FileTemplate por Kevin.
+ */
 #parse("PHP File Header.php")
 #set( $CONTRA_BARRA = "\" )
 namespace App\Http\Controllers$CONTRA_BARRA${NAMESPACE};

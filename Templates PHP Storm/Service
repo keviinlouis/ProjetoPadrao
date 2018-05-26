@@ -1,10 +1,14 @@
 <?php
+/**
+ * Criado através de FileTemplate por Kevin.
+ */
 #parse("PHP File Header.php")
 #set( $CONTRA_BARRA = "\" )
 
 namespace App\Services;
 
 use App\Entities$CONTRA_BARRA${MODEL};
+use App\Validators$CONTRA_BARRA${MODEL}Rules;
 #if (${IS_AUTH} == "TRUE" || ${IS_AUTH} == "true" || ${IS_AUTH} == "1")
 use Illuminate\Http\Response;
 #end
@@ -26,8 +30,8 @@ class ${NAME} extends Service
      * ${MODEL}Service constructor.
      */
     public function __construct()
-{
-    \$this->relations = [];
+    {
+        \$this->relations = [];
         \$this->relationsCount = [];
     }
 
@@ -43,8 +47,6 @@ class ${NAME} extends Service
         if(!\$filters){
             \$filters = collect();
         }
-
-        \$this->validateWithArray(\$filters->toArray(), \$this->indexRules());
 
         \$query = ${MODEL}::with(\$this->relations);
 
@@ -82,7 +84,7 @@ class ${NAME} extends Service
      */
     public function store(Collection \$data) : ${MODEL}
     {
-        \$this->validateWithArray(\$data->toArray(), \$this->storeRules());
+        \$this->validateWithArray(\$data->toArray(), ${MODEL}Rules::store());
 
         \$model = ${MODEL}::create(\$data->all());
 
@@ -100,7 +102,7 @@ class ${NAME} extends Service
      */
     public function update(Collection \$data, \$id) : ${MODEL}
     {
-        \$this->validateWithArray(\$data->toArray(), \$this->updateRules());
+        \$this->validateWithArray(\$data->toArray(), ${MODEL}Rules::update());
 
         \$model = \$this->show(\$id);
 
@@ -133,7 +135,7 @@ class ${NAME} extends Service
      */
     public function login(Collection \$data): ${MODEL}
     {
-        \$this->validateWithArray(\$data, \$this->loginRules());
+        \$this->validateWithArray(\$data, ${MODEL}Rules::login());
 #if (${WITH_FACEBOOK} == "TRUE" || ${WITH_FACEBOOK} == "true" || ${WITH_FACEBOOK} == "1")
         if (\$facebook_id = \$data->get('facebook_id')) {
             \$model = ${MODEL}::whereFacebookId(\$facebook_id)->first();
@@ -152,59 +154,5 @@ class ${NAME} extends Service
 
         return \$model;
     }
-
-    /**
-     * @return array
-     */
-    public function loginRules(): array
-    {
-        return [
-
-#if (${WITH_FACEBOOK} == "TRUE" || ${WITH_FACEBOOK} == "true" || ${WITH_FACEBOOK} == "1")
-            'email' => 'required_without:facebook_id|string|exists:'.(new ${MODEL})->getTable(),
-            'senha' => 'required_without:facebook_id|string',
-            'facebook_id' => 'required_without:email|required_without:senha|string|exists:'.(new ${MODEL})->getTable()
-#else
-            'email' => 'required|string|exists:'.(new ${MODEL})->getTable(),
-            'senha' => 'required|string',
-#end
-        ];
-    }
-#end
-
-#if (${WITH_RULES} == "TRUE" || ${WITH_RULES} == "true" || ${WITH_RULES} == "1")
-    /**
-     * Regras para a listagem de ${MODEL}
-     * @return array
-     */
-    protected function indexRules() : array
-    {
-        return [
-            //TODO Implementar index Rules
-        ];
-    }
-
-    /**
-     * Regras para criação de ${MODEL}
-     * @return array
-     */
-    protected function storeRules() : array
-    {
-        return [
-            //TODO Implementar store Rules
-        ];
-    }
-
-    /**
-     * Regras para alteração de ${MODEL}
-     * @return array
-     */
-    protected function updateRules() : array
-    {
-        return [
-            //TODO Implementar update Rules
-        ];
-    }
-
 #end
 }

@@ -77,7 +77,7 @@ class Handler extends ExceptionHandler
 
     public function makeResponseJson(Request $request, Exception $exception)
     {
-        $production = env('APP_ENV') != 'production';
+        $production = env('APP_ENV') == 'production';
 
         if ($exception instanceof ValidationException) { // Exception de validator
             return (new ValidationResource($exception))->response();

@@ -1,6 +1,6 @@
 <?php
 /**
- * Created by PhpStorm.
+ * Created by Kevin Louis e Wendell Neander.
  * User: DevMaker Backend
  * Date: 28/02/2018
  * Time: 15:40
@@ -12,6 +12,7 @@ namespace App\Services;
 use Illuminate\Http\Response;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
+use Image;
 use Storage;
 use URL;
 
@@ -20,7 +21,8 @@ class FileService
     private $public;
     private $pathTemp;
     private $extensions_allowed;
-    private $image_extensions = ['jpg', 'jpeg', 'png', 'gif'];
+    private $image_extensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp'];
+    private $lastErrorMsg;
 
     /**
      * FileService constructor.
@@ -55,6 +57,9 @@ class FileService
         $this->extensions_allowed = collect($newExtensions);
     }
 
+    /**
+     * @param array $moreExtensions
+     */
     public function setImageExtensions($moreExtensions = [])
     {
         $this->setExtensionsAllowed($this->image_extensions + $moreExtensions);
@@ -82,12 +87,12 @@ class FileService
     }
 
     /**
-     * @param $file
+     * @param UploadedFile $file
      * @param string $extension
      * @return string
      * @throws \Exception
      */
-    public function makeFileName($file, string $extension = ''): string
+    public function makeFileName(UploadedFile $file, string $extension = ''): string
     {
         $extension = $this->extractExtension($file, $extension);
 
@@ -99,11 +104,11 @@ class FileService
     }
 
     /**
-     * @param $file
+     * @param UploadedFile $file
      * @param string $extension
      * @return string
      */
-    public function extractExtension($file, string $extension = ''): string
+    public function extractExtension(UploadedFile $file, string $extension = ''): string
     {
         if ($extension == '' || is_null($extension)) {
             $extension = $file->getClientOriginalExtension();
@@ -112,7 +117,7 @@ class FileService
         if (strpos($extension, '.') === false) {
             $extension = '.' . $extension;
         }
-        return strtolower($extension) == '.jpeg' || strtolower($extension) == '.JPEG' ? '.jpg' : $extension;
+        return strtolower($extension) == '.jpeg' ? '.jpg' : strtolower($extension);
     }
 
     /**
@@ -128,39 +133,13 @@ class FileService
     }
 
     /**
-     * @param $file
-     * @return string
-     */
-    public function extractExtensionFromFacebook($file): string
-    {
-        $arrayFileName = explode('?', $file);
-        $arrayFileName = explode('/', reset($arrayFileName));
-        $arrayFileName = explode('.', end($arrayFileName));
-        $extension = end($arrayFileName);
-        return $extension;
-    }
-
-    /**
-     * @param $file
-     * @return string
-     */
-    public function extractNameFromFacebook($file): string
-    {
-        $arrayFileName = explode('?', $file);
-        $arrayFileName = explode('/', reset($arrayFileName));
-        $arrayFileName = explode('.', end($arrayFileName));
-        $name = reset($arrayFileName);
-        return $name;
-    }
-
-    /**
-     * @param $file
+     * @param UploadedFile $file
      * @param string $extension
      * @param bool $url
      * @return string
      * @throws \Exception
      */
-    public function uploadFileToTmp($file, string $extension = '', $url = false): string
+    public function uploadFileToTmp(UploadedFile $file, string $extension = '', $url = false): string
     {
         return $this->uploadFile($this->pathTemp, $file, $extension, $url);
 
@@ -168,13 +147,13 @@ class FileService
 
     /**
      * @param $path
-     * @param $file
+     * @param UploadedFile $file
      * @param string $extension
      * @param bool $url
      * @return string
      * @throws \Exception
      */
-    public function uploadFile($path, $file, string $extension = '', $url = false): string
+    public function uploadFile($path, UploadedFile $file, string $extension = '', $url = false): string
     {
         $fileName = $this->makeFileName($file, $extension);
 
@@ -183,6 +162,9 @@ class FileService
         return $url ? $this->url($path . $fileName) : $path . $fileName;
     }
 
+    /**
+     * @param array $files
+     */
     public function removeArrayFiles(array $files)
     {
         foreach ($files as $file) {
@@ -190,6 +172,9 @@ class FileService
         }
     }
 
+    /**
+     * @param array $files
+     */
     public function removeArrayFromTmp(array $files)
     {
         foreach ($files as $file) {
@@ -281,6 +266,67 @@ class FileService
     }
 
     /**
+     * @param $width
+     * @param $height
+     * @param $fileName
+     * @param $newName
+     * @param $pathFrom
+     * @param $pathSave
+     * @return bool|string
+     */
+    public function resizeImage($width, $height, $fileName, $newName = '', $pathSave = '')
+    {
+        try {
+            $this->checkNameIsValid($fileName);
+
+            $pathFile = storage_path('app/' . $fileName);
+
+            if(!is_file($pathFile)){
+                throw new \Exception('Arquivo não encontrado', Response::HTTP_NOT_FOUND);
+            }
+
+            $img = Image::make($pathFile);
+
+            $img->fit($width, $height);
+
+            if($newName == ''){
+                $newName = explode('/', $fileName);
+                $newName = $newName[count($newName)-1];
+            }
+
+            if($pathSave == ''){
+                $pathSave = explode('/', $fileName);
+                unset($pathSave[count($pathSave)-1]);
+                $pathSave = implode('/', $pathSave);
+            }
+
+            $pathSave = trim($pathSave, '/');
+
+            $pathSave = storage_path('app/' . $pathSave);
+
+            $img->save($pathSave.'/'.$newName);
+
+            return $newName;
+        } catch (\Exception $e) {
+            $this->lastErrorMsg = $e->getMessage();
+            return false;
+        }
+    }
+
+    /**
+     * @param $width
+     * @param $height
+     * @param $fileName
+     * @param string $newName
+     * @param string $pathSave
+     * @return string
+     */
+    public function resizeImageFromTemp($width, $height, $fileName, $newName = '', $pathSave = '')
+    {
+        return $this->resizeImage($width, $height, $this->pathTemp.'/'.$fileName, $newName, $pathSave);
+    }
+
+    /**
      * @param string $fromPath
      * @param string $toPath
      * @param bool $url
@@ -289,7 +335,6 @@ class FileService
      */
     public function copyFile(string $fromPath, string $toPath, $url = false): string
     {
-//        Storage::exists($toPath) ?: Storage::makeDirectory($toPath);
 
         if (!Storage::exists($fromPath) && !Storage::exists($toPath)) {
             throw new \Exception('Arquivo não encontrado', Response::HTTP_NOT_FOUND);
@@ -322,6 +367,11 @@ class FileService
     public function makePath(string $path, string $value, string $search): string
     {
         return str_replace('{' . $search . '}', $value, $path);
+    }
+
+    public function getLastErrorMsg()
+    {
+        return $this->lastErrorMsg;
     }
 
 

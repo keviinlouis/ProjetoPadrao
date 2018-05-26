@@ -6,12 +6,12 @@ trait Files
 {
     public function getPublicPathFiles()
     {
-        return 'public/'.$this->getTable().'/'.$this->getKey();
+        return 'public/'.$this->getPathFiles();
     }
 
     public function removePublicFiles()
     {
-       !\Storage::exists($this->getPublicPathFiles())?:\Storage::deleteDirectory($this->getPublicPathFiles());
+        !\Storage::exists($this->getPublicPathFiles())?:\Storage::deleteDirectory($this->getPublicPathFiles());
     }
 
     public function getPathFiles()

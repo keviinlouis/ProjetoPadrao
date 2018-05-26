@@ -9,8 +9,10 @@
 namespace App\Moip\Services;
 
 
-use App\Entities\Dono;
+use App\Entities\Cliente;
+use App\Entities\Oficina;
 use App\Entities\Plano;
+use App\Moip\Resources\AddressResource;
 use App\Moip\Resources\BillingAddressResource;
 use App\Moip\Resources\CpfDocumentResource;
 use App\Moip\Resources\CreditCardResource;
@@ -22,8 +24,6 @@ use App\Moip\Resources\PhoneResource;
 use App\Moip\Resources\ProductResource;
 use App\Moip\Resources\ShippingAddressResource;
 use App\Moip\Resources\TicketResource;
-use Couchbase\Document;
-use Moip\Resource\Customer;
 
 /**
  * Class MoipService
@@ -36,17 +36,16 @@ class MoipService extends Service
     ];
 
     /**
-     * @param Plano $order
+     * @param $order
      * @param $customer
      * @return OrderResource
      */
     public function transformOrder($order, $customer)
     {
-
         $product = new ProductResource(
-            'Anuncio '.$order->nome,
+            $order->nome,
             1,
-            'Anuncio ' . $order->nome,
+            $order->nome,
             $order->valor
         );
 
@@ -62,7 +61,7 @@ class MoipService extends Service
     }
 
     /**
-     * @param Dono $customer
+     * @param Oficina $customer
      * @param DocumentResource|null $documentResource
      * @param PhoneResource|null $phoneResource
      * @param ShippingAddressResource $shippingAddressResource
@@ -77,6 +76,17 @@ class MoipService extends Service
     {
         if(!$phoneResource){
             $phoneResource = new PhoneResource($customer->telefone);
+        }
+        if(!$documentResource){
+            $document = $customer->cnpj ?: $customer->cpf;
+
+            $type = $customer->cnpj?DocumentResource::CNPJ:DocumentResource::CPF;
+
+            $documentResource = new DocumentResource($type, $document);
+        }
+
+        if(!$shippingAddressResource){
+            $shippingAddressResource = $this->transformShippingAddress($customer->endereco);
         }
         $resource = new CustomerResource(
             uniqid(),
@@ -121,11 +131,10 @@ class MoipService extends Service
 
     /**
      * @param $product
-     * @return ProductResource
+     * @return void
      */
     public function transformProduct($product)
     {
-        // TODO: Implement transformProduct() method.
     }
 
     /**
@@ -175,17 +184,17 @@ class MoipService extends Service
      * @param $birthDate
      * @param $cpf
      * @param $phone
-     * @param BillingAddressResource $billingAddressResource
+     * @param $billingAddressResource
      * @return HolderResource
      */
-    public function transformHolder($fullName, $birthDate, $cpf, $phone, BillingAddressResource $billingAddressResource)
+    public function transformHolder($fullName, $birthDate, $cpf, $phone, $address)
     {
         $resource = new HolderResource(
             $fullName,
             $birthDate,
             new CpfDocumentResource($cpf),
             new PhoneResource($phone),
-            $billingAddressResource
+            $this->transformBillingAddress($address)
         );
 
         $this->holder = $resource;
