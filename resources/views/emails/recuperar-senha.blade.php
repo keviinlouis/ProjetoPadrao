@@ -8,7 +8,7 @@
                 <div class="card-header">Redefinir Senha</div>
 
                 <div class="card-body">
-                    Foi solicitado uma mudança de senha para a sua conta PetLoversApp<br>
+                    Foi solicitado uma mudança de senha para a sua conta {{ env('APP_NAME') }}App<br>
                     Caso não tenha sido você, apenas ignore este email<br>
                     <br>
                     <br>

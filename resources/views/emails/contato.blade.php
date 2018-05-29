@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card card-default">
-                <div class="card-header">Contato PetLovers</div>
+                <div class="card-header">Contato {{ env('APP_NAME') }}</div>
 
                 <div class="card-body">
                     Nome: {{$nome}}<br>

@@ -8,7 +8,7 @@
                 <div class="card-header">Bem vindo {{$dono->nome}}</div>
 
                 <div class="card-body">
-                    Olá {{$dono->nome}}, seja bem vindo ao PetLovers!
+                    Olá {{$dono->nome}}, seja bem vindo ao {{ env('APP_NAME') }}!
                 </div>
             </div>
         </div>

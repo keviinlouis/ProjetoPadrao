@@ -17,7 +17,7 @@ Como vocês obtêm meu consentimento?
 Quando você fornece informações pessoais como nome, telefone e endereço, para completar: uma transação, verificar seu cartão de crédito, fazer um pedido, providenciar uma entrega ou retornar uma compra. Após a realização de ações entendemos que você está de acordo com a coleta de dados para serem utilizados pela nossa empresa.
 Se pedimos por suas informações pessoais por uma razão secundária, como marketing, vamos lhe pedir diretamente por seu consentimento, ou lhe fornecer a oportunidade de dizer não.
 E caso você queira retirar seu consentimento, como proceder?
-Se após você nos fornecer seus dados, você mudar de ideia, você pode retirar o seu consentimento para que possamos entrar em contato, para a coleção de dados contínua, uso ou divulgação de suas informações, a qualquer momento, entrando em contato conosco em <b>sergio@clubfix.com.br</b> ou nos enviando uma correspondência em: <b>clubfix</b> Rua: Expedicionário Holz, 550 sala 1702.<br><br>
+Se após você nos fornecer seus dados, você mudar de ideia, você pode retirar o seu consentimento para que possamos entrar em contato, para a coleção de dados contínua, uso ou divulgação de suas informações, a qualquer momento, entrando em contato conosco em <b>sergio@{{ env('APP_NAME') }}.com.br</b> ou nos enviando uma correspondência em: <b>{{ env('APP_NAME') }}</b> Rua: Expedicionário Holz, 550 sala 1702.<br><br>
 
 <h3><b>SEÇÃO 3 - DIVULGAÇÃO</b></h3>
 Podemos divulgar suas informações pessoais caso sejamos obrigados pela lei para fazê-lo ou se você violar nossos Termos de Serviço. <br><br>
