@@ -48,7 +48,7 @@ class SeedAllTables extends Command
 
 
         $groups = $tables->map(function($table){
-            return $table->Tables_in_anjo;
+            return $table->Tables_in_.env('DB_DATABASE');
         })->chunk($this->option('chunk'));
 
         $groups->each(function($group){
