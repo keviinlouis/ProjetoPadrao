@@ -1,0 +1,78 @@
+@import url( 'type-01.css' );
+@import url( 'type-02.css' );
+@import url( 'type-03.css' );
+
+.button{
+    padding:6px 15px !important;
+    outline:none;
+    border:1px solid transparent;
+    background:transparent;
+    transition:0.3s;
+    cursor:pointer;
+}
+
+.button:not(.no-scale):hover,
+.button:not(.no-scale):active,
+.button:not(.no-scale):focus{
+    transition:0.3s;
+    transform:scale(1.05);
+    outline:none;
+}
+
+.button.no-scale:hover,
+.button.no-scale:active,
+.button.no-scale:focus{
+    transition:0.3s;
+    outline:none;
+}
+
+.button.outline,
+.button.double{
+    background:transparent !important;
+}
+
+.button.double{
+    padding:7px 15px;
+    border-width:4px;
+    border-color:#fff;
+    border-style:double;
+}
+
+.button.rounded{
+    border-radius:30px;
+}
+
+.button.shadow{
+    box-shadow: 0 6px 6px 0 rgba(0, 0, 0, 0.24);
+}
+
+.dropdown-menu{
+    background:var(--default);
+    padding-bottom:0px;
+}
+
+.dropdown-menu .dropdown-item{
+    color:var(--white);
+    padding:10px;
+    text-align:center;
+    border-bottom:1px solid var(--white);
+}
+
+.dropdown-menu .dropdown-item:last-child{
+    border-bottom:none;
+}
+
+.dropdown-menu .dropdown-item:hover{
+    background:var(--default-active);
+}
+
+.dropdown-menu:before {
+    content: "";
+    display: block;
+    width: 0;
+    height: 0;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-bottom: 10px solid var(--default);
+    margin: -15px 10px 0px auto;
+}

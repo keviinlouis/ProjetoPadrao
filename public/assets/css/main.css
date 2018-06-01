@@ -1,0 +1,271 @@
+@import url('../plugins/main.css');
+@import url('material-icons/material-icons.css');
+@import url('glyphicons/glyphicons.css');
+@import url('webgreater/main.css');
+@import url('fonts/fonts.css');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css');
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+
+*{
+    margin:0px;
+    padding:0px;
+    text-decoration:none;
+}
+
+/*~~ Fonts ~~*/
+
+body{
+    --default:#1386ca;
+    --default-hover:#1386caCC;
+    --default-active:#1386ca80;
+    --default-focus:#1386ca80;
+
+    --primary:#ff9930;
+    --primary-hover:#ff9930CC;
+    --primary-active:#ff993080;
+    --primary-focus:#ff993080;
+
+    --white:#FFFFFF;
+    --white-hover:#FFFFFFCC;
+    --white-active:#FFFFFF80;
+    --white-focus:#FFFFFF80;
+
+    --grey:#C9C9C9;
+    --grey-hover:#C9C9C9CC;
+    --grey-active:#C9C9C980;
+    --grey-focus:#C9C9C980;
+
+    --light-grey:#E9E9E9;
+    --light-grey-hover:#E9E9E9CC;
+    --light-grey-active:#E9E9E980;
+    --light-grey-focus:#E9E9E980;
+
+    --black:#444444;
+    --black-hover:#444444CC;
+    --black-active:#44444480;
+    --black-focus:#44444480;
+
+    --facebook:#3b5998;
+    --facebook-hover:#3b5998CC;
+    --facebook-active:#3b599880;
+    --facebook-focus:#3b599880;
+
+    --whatsapp:#25d366;
+    --whatsapp-hover:#128c7e;
+    --whatsapp-active:#075e54;
+    --whatsapp-focus:#075e54;
+}
+
+html, body{
+    width:100%;
+    height:100%;
+}
+
+html, body{
+    /*font-family: 'Roboto', sans-serif;*/
+    font-family:Lato-Regular;
+    position:relative;
+}
+
+p{
+    font-size:18px;
+}
+
+.title{
+    font-size:72px;
+    font-family:Lato-Light;
+    margin-bottom:30px;
+}
+
+.subtitle{
+    font-size:64px;
+    font-family:Lato-Light;
+    margin-bottom:30px;
+    text-align:center;
+}
+
+.full-screen{
+    width:100%;
+    height:100%;
+}
+
+.full-width{
+    width:100%;
+}
+
+.full-height{
+    height:100%;
+}
+
+.contact-row{
+    margin-left:-70px;
+    margin-right:-70px;
+}
+
+.contact-row > div{
+    padding:0px 70px;
+}
+
+.contacts .contact{
+    display:flex;
+    align-items:center;
+    margin-bottom:15px;
+}
+
+.contacts .contact .image{
+    width:50px;
+}
+
+.contacts .contact .image img{
+    width:100%;
+}
+
+.contacts .contact h5{
+    margin:0px;
+    margin-left:15px;
+}
+
+.footer.default{
+    padding:50px 0px;
+    background:var(--default);
+    color:var(--white);
+}
+
+.footer.default p{
+    margin:0px;
+    margin-bottom:5px;
+    color:var(--white) !important;
+}
+
+.footer.default .menu{
+    display:flex;
+    align-items:stretch;
+    flex-direction:column;
+    height:100%;
+}
+
+.footer.default a{
+    color:var(--white);
+}
+
+.footer.default .menu a{
+    color:var(--white);
+    text-decoration:none;
+    height:100%;
+    display:flex;
+    align-items:flex-start;
+}
+
+.footer.default .menu a:hover{
+    text-decoration:underline;
+}
+
+.row.planos-row,
+.row.protecoes-row{
+    margin-left:-50px;
+    margin-right:-50px;
+}
+
+.row.planos-row > div,
+.row.protecoes-row > div{
+    padding:0px 50px;
+}
+
+p{
+    color:#777 !important;
+}
+
+.row.protecoes-row > div{
+    text-align:center;
+}
+
+.row.protecoes-row > div .image{
+    width:100px;
+    height:100px;
+    display:flex;
+    align-items:flex-end;
+    justify-content:center;
+    margin:20px auto 20px auto;
+}
+
+.row.protecoes-row > div .image img{
+    width:100%;
+}
+
+.row.protecoes-row + .info{
+    text-align:center;
+    margin-top:30px;
+}
+
+.row.protecoes-row + .info .button.md{
+    padding:15px 100px !important;
+    box-shadow: 0 6px 6px 0 rgba(0, 0, 0, 0.24);
+}
+
+.portlet.type-01{
+    background-color: #ffffff;
+    border: solid 1px #c8c8c8;
+    text-align:center;
+    font-family:Lato-BoldItalic;
+    color:#777;
+}
+
+.portlet.type-01 .portlet-body .list{
+    list-style:none;
+}
+
+.portlet.type-01 .portlet-body .list .item:nth-child(odd){
+    background:#f3f3f3;
+}
+
+.portlet.type-01 .portlet-body .list .item{
+    padding:15px;
+}
+
+.portlet.type-01 .portlet-body .list .item.active{
+    background:var(--default);
+    color:var(--white);
+}
+
+.portlet.type-01 .portlet-footer{
+    border-top:1px solid #d9d9d9;
+}
+
+.portlet.type-01 .portlet-header,
+.portlet.type-01 .portlet-footer{
+    padding:15px;
+}
+
+.portlet.type-01 .portlet-body{
+    text-align:center;
+}
+
+@media all and ( max-width:992px ){
+
+}
+
+@media all and ( max-width:768px ){
+
+    h2.subtitle{
+        font-size:48px;
+    }
+
+}
+
+@media all and ( max-width:576px ){
+
+    h2.subtitle{
+        font-size:28px;
+    }
+
+    footer .container-fluid{
+        padding-left:15px;
+        padding-right:15px;
+    }
+
+    .row.protecoes-row + .info .button.md{
+        padding:15px !important;
+        width:100%;
+    }
+
+}

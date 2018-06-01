@@ -11,13 +11,21 @@ namespace App\Observers;
 
 use App\Entities\Endereco;
 
-class EnderecoObserver
+class EnderecoObserver extends Observer
 {
+    public function saving(Endereco $endereco)
+    {
+        if($endereco->hasLatLong() && !$endereco->hasDadosEnderecos()){
+            $endereco->updateEnderecoByLatLong();
+        }
+    }
     /**
      * @param Endereco $endereco
      */
     public function saved(Endereco $endereco)
     {
-        $endereco->loadLatLong();
+        if(!$endereco->hasLatLong() || $this->isNotEqual(['cep', 'rua', 'numero', 'cidade', 'estado', 'bairro'], $endereco)){
+            $endereco->loadLatLong();
+        }
     }
 }

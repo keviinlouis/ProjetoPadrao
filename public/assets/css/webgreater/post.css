@@ -1,0 +1,130 @@
+.posts{
+    height:100vh;
+    background:#fff;
+    border-top:3px solid var(--default);
+    border-bottom:3px solid var(--default);
+}
+
+.posts .post:not(:first-child){
+    border-top:1px solid var(--default);
+}
+
+.posts .post .info{
+    display:flex;
+    justify-content:space-between;
+    padding:15px 20px;
+}
+
+.posts .post .info .left,
+.posts .post .info .right{
+    display:flex;
+    align-items: center;
+}
+
+.posts .post .info .right h5:
+
+.posts .post .info .right h5{
+    display:flex;
+    align-items:center;
+}
+
+.posts .post .info .right .button{
+    margin-right:10px;
+}
+
+.posts .post .info .right h5 i{
+    margin-right:5px;
+}
+
+.posts .post .info img{
+    width:50px;
+    height:50px;
+    object-fit:cover;
+    border-radius:50%;
+    margin-right:15px;
+    border:1px solid var(--default);
+    background:var(--default);
+}
+
+.posts .post .info .user h5,
+.posts .post .info .user p{
+    margin:0px;
+}
+
+.posts .post .content{
+    padding:15px;
+}
+
+.posts .post .actions .fa,
+.posts .post .actions .fas,
+.posts .post .actions .material-icons,
+.posts .post .actions .glyphicon{
+    margin-right:5px;
+    cursor:pointer;
+    color:var(--grey);
+}
+
+.posts .post .likes,
+.posts .post .show-comments{
+    cursor:pointer;
+}
+
+.posts .post .comment{
+    margin:10px 0px;
+}
+
+.posts .post .comment p{
+    margin:0px;
+}
+
+.posts .post .comment strong{
+    margin-right:5px;
+}
+
+.posts .post .add-comment{
+    border:1px solid var(--default);
+    border-left:none;
+    border-right:none;
+    border-radius:0px;
+    margin-bottom:15px;
+}
+
+.posts .post .add-comment .form-control:focus,
+.posts .post .add-comment .form-control:active{
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    outline:none;
+}
+
+.posts .post .add-comment .form-control{
+    border:none;
+    border-radius:0px;
+}
+
+.posts .post .add-comment .input-group-addon{
+    padding:5px 10px;
+    cursor:pointer;
+}
+
+.posts .post .add-comment .input-group-addon svg{
+    margin-top:2px;
+}
+
+.posts .post .add-comment .input-group-addon svg path{
+    fill:var(--default);
+}
+
+@media all and ( max-width:768px ){
+
+    .posts .post .info{
+        flex-direction:column;
+    }
+
+    .posts .post .info .right{
+        display:flex;
+        justify-content:flex-end;
+        margin-top:5px;
+    }
+
+}

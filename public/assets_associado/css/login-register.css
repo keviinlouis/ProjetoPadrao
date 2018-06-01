@@ -1,0 +1,132 @@
+.backgrounded{
+	background-size:cover;
+	background-repeat:no-repeat;
+	background-position:center;
+	display:flex;
+	justify-content:center;
+	align-items:center;
+}
+
+.login{
+	width:300px;
+	padding-top:10rem;
+	padding-bottom:5rem;
+}
+
+.login .full-width,
+.register .full-width{
+	width:100%;
+}
+
+.login button + button{
+	margin-top:15px;
+}
+
+.login .new-account{
+	margin-top:30px;
+	text-align:center;
+}
+
+.login .new-account a + a{
+	margin-top:30px;
+}
+
+.login a.black{
+	background:#444 !important;
+	color:var(--white) !important;
+	border-radius:30px;
+}
+
+/* label underline focus color */
+.input-field input[type=text].default:focus {
+	border-bottom: 1px solid var(--default) !important;
+	box-shadow: 0 1px 0 0 var(--default) !important;
+}
+/* valid color */
+.input-field input[type=text].default.valid {
+	border-bottom: 1px solid #000;
+	box-shadow: 0 1px 0 0 #000;
+}
+/* invalid color */
+.input-field input[type=text].default.invalid {
+	border-bottom: 1px solid #000;
+	box-shadow: 0 1px 0 0 #000;
+}
+/* icon prefix focus color */
+.input-field .prefix.active {
+	color: #000;
+}
+
+.input-field.md{
+	margin-top:2rem;
+	margin-bottom:2rem;
+}
+
+.input-field.md label{
+	font-size:18px;
+	top:-10px;
+	color:var(--default);
+}
+
+.input-field.md label.center-align{
+	left:30%;
+}
+
+[type="checkbox"] + span.default:not(.lever):before, 
+[type="checkbox"]:not(.filled-in) + span.default:not(.lever):after{
+	border-color:var(--default);
+}
+
+[type="checkbox"]:checked + span.default:not(.lever):before{
+	border-top: 2px solid transparent;
+	border-left: 2px solid transparent;
+	border-right: 2px solid var(--default);
+	border-bottom: 2px solid var(--default);
+}
+
+a.default{
+	color:var(--default) !important;
+}
+
+.field.default:focus + label{
+	color:var(--default);
+}
+
+.register{
+	width:70%;
+	padding-top:10rem;
+	padding-bottom:5rem;
+}
+
+.row{
+	margin-left:-10px;
+	margin-right:-10px;
+	margin-bottom:0px;
+}
+
+.register h5{
+	margin-bottom:50px;
+}
+
+@media all and ( max-width: 600px ){
+	
+	.register h5{
+		margin-top:100px;
+		margin-bottom:20px;
+	}
+
+	.register{
+		width:100%;
+		padding:0px 15px;
+	}
+
+	.input-field.md label.center-align{
+		left:10px;
+		white-space:nowrap;
+	}
+
+	.input-field.md{
+		margin-bottom:1rem;
+	}
+
+}

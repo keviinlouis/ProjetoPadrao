@@ -1,0 +1,70 @@
+.modal.type-01 .modal-content,
+.modal.type-01 .modal-header,
+.modal.type-01 .modal-body,
+.modal.type-01 .modal-footer{
+    border-radius:0px;
+}
+
+.modal.type-01 .modal-body{
+    padding:45px;
+}
+
+.modal.type-01 .modal-body a{
+    cursor:pointer;
+    text-decoration:underline;
+    color:var(--black);
+}
+
+.modal.type-01 .modal-body label.button.default:hover,
+.modal.type-01 .modal-body .radio:checked + label.button.default{
+    background:var(--default) !important;
+    color:var(--white);
+}
+
+.modal.type-01 .modal-body .button.facebook{
+    margin-bottom:15px;
+}
+
+.modal.type-01 .modal-footer{
+    padding:0px;
+    display:flex;
+}
+
+.modal.type-01 .modal-footer .button{
+    padding:30px 0px !important;
+}
+
+/*~~ Sizes ~~*/
+
+.modal .modal-dialog.md{
+    max-width:700px !important;
+}
+
+.modal .modal-dialog.sm{
+    max-width:480px !important;
+}
+
+/*~~ Site ~~*/
+
+.login-types{
+    display:flex;
+    justify-content:space-between;
+    text-align:center;
+    margin-bottom:15px;
+}
+
+.login-types .button:not(:last-child){
+    margin-right:10px;
+}
+
+@media all and ( max-width:480px ){
+
+    .login-types{
+        flex-wrap:wrap;
+    }
+
+    .login-types .button:not(:last-child){
+        margin-right:0px;
+    }
+
+}

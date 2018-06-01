@@ -1,0 +1,23 @@
+.sidenav{
+	background:var(--default);
+}
+
+.sidenav li{
+	border-left:5px solid transparent;
+	border-bottom:1px solid rgba(255, 255, 255, 0.12);
+}
+
+.sidenav li.active{
+	border-left-color:var(--primary);
+}
+
+.sidenav li > a{
+	color:var(--white);
+	margin-left:-5px;
+	transition:0.3s;
+}
+
+.sidenav li > a:hover{
+	color:var(--primary);
+	transition:0.3s;
+}

@@ -1,0 +1,239 @@
+.field.type-01{
+    border-radius:0.25rem;
+}
+
+.field.select2.type-01 + .select2-container--default .select2-selection--single{
+    height:42px;
+    border-color:#d9d9d9;
+    border-radius:0.25rem;
+}
+
+.field.select2.type-01 + .select2-container--default .select2-selection--single .select2-selection__rendered{
+    line-height:42px;
+    color:var(--default);
+}
+
+.field.select2.type-01 + .select2-container--default .select2-selection--single .select2-selection__arrow b{
+    border-color: #d9d9d9 transparent transparent transparent;
+    border-width: 5px 5px 0 5px;
+    margin-left: -10px;
+    margin-top: 7px;
+}
+
+.field.select2.type-01.default + .select2-container--default .select2-selection--single{
+    border-color:var(--default);
+}
+
+.field.select2.type-01.default + .select2-container--default .select2-selection--single .select2-selection__arrow b{
+    border-color: var(--default) transparent transparent transparent;
+}
+
+.field.type-02{
+    border-radius:0px;
+}
+
+.field.select2.type-02.md + .select2-container--default .select2-selection--single{
+    height:62px;
+    border-color:#d9d9d9;
+    border-radius:0px;
+}
+
+.field.select2.type-02.md + .select2-container--default .select2-selection--single .select2-selection__rendered{
+    line-height:62px;
+    font-size:18px;
+}
+
+.field.select2.type-02.md + .select2-container--default .select2-selection--single .select2-selection__arrow b{
+    border-color: #d9d9d9 transparent transparent transparent;
+    border-width: 10px 7px 0 7px;
+    margin-left: -10px;
+    margin-top: 13px;
+}
+
+.field.select2.type-02.default + .select2-container--default .select2-selection--single{
+    border-color:var(--default);
+}
+
+.field.select2.type-02.default + .select2-container--default .select2-selection--single .select2-selection__arrow b{
+    border-color: var(--default) transparent transparent transparent;
+}
+
+.select2-dropdown,
+.select2-container--default .select2-search--dropdown .select2-search__field{
+    border: 1px solid var(--default);
+    outline:none;
+    -webkit-box-shadow:none;
+    -moz-box-shadow:none;
+    box-shadow:none;
+}
+
+.select2-container--default .select2-results__option--highlighted[aria-selected]{
+    background:var(--default);
+}
+
+.field.select2.type-02.default + .select2-container .select2-selection--multiple{
+    min-height:62px;
+    border-radius:0px;
+}
+
+.field.select2.type-02.default + .select2-container--default .select2-selection--multiple .select2-selection__choice {
+    background-color: var(--default);
+    color: var(--white);
+    border: 1px solid var(--default) !important;
+    padding: 11px 10px;
+}
+
+.field.select2.type-02.default + .select2-container--default.select2-container--focus .select2-selection--multiple {
+    border: solid var(--default) 1px;
+}
+
+.field.select2.type-02.default + .select2-container--default .select2-selection--multiple {
+    border: 1px solid var(--default);
+}
+
+.field.select2.type-02.default + .select2-container--default .select2-search--inline .select2-search__field {
+    padding: 9px 0px;
+    font-size: 20px;
+}
+
+.field.select2.type-02.default + .select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+    color: var(--white);
+    margin-right: 5px;
+}
+
+/*~~ Field Group ~~*/
+
+.field-group{
+
+}
+
+.field-group{
+    display:flex;
+    justify-content:space-between;
+    padding:0px;
+    border:1px solid transparent;
+}
+
+.field-group.type-01{
+    border-radius:0.25rem;
+}
+
+.field-group.default{
+    border-color:var(--default);
+}
+
+.field-group.default input[type="text"],
+.field-group.default input[type="text"]::placeholder{
+    color:var(--default);
+}
+
+.field-group.type-01 input[type="text"]{
+    height:42px;
+    padding:0px 10px;
+    border-radius:0.25rem;
+}
+
+.field-group.type-01 .icon{
+    padding:0px 10px;
+}
+
+.field-group.md{
+    padding:0px;
+}
+
+.field-group input[type="text"]{
+    width:100%;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    outline:none;
+    border:none;
+    padding:0px 15px;
+}
+
+.field-group.type-02{
+    border:1px solid transparent;
+}
+
+.field-group.default.type-02{
+    border-color:var(--default);
+}
+
+.field-group.md input[type="text"]{
+    padding:15px 15px;
+}
+
+.field-group .icon{
+    /*margin-left:-34px;*/
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:16px;
+}
+
+.field-group.md .icon{
+    /*padding:15px 10px;*/
+    padding:0px 15px;
+}
+
+.field-group.default .icon{
+    color:var(--default);
+}
+
+p.green{
+    color:#417505;
+    font-weight:bold;
+    text-decoration:underline;
+}
+
+/*~~ Checkbox ~~*/
+
+.checkbox-content{
+    margin:10px 0px;
+}
+
+.checkbox{
+    display:none;
+}
+
+.checkbox + label{
+    display:flex;
+    flex-wrap:wrap;
+    cursor:pointer;
+}
+
+.checkbox + label .box{
+    width:20px;
+    height:20px;
+    border:1px solid red;
+}
+
+.checkbox + label span{
+    margin-left:10px;
+    width:calc(100% - 30px);
+}
+
+
+.checkbox:checked + label .box{
+    background:red;
+}
+
+.checkbox:checked + label .box:after{
+    content:"✔";
+    position:relative;
+    top:-2px;
+    left:2px;
+    color:#fff;
+}
+
+.checkbox.default + label .box{
+    border:1px solid var(--default);
+}
+
+.checkbox.default:checked + label .box{
+    background:var(--default);
+}
+
+.checkbox.default:checked + label .box:after{
+    color:#fff;
+}

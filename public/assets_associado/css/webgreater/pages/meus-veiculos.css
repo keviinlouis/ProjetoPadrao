@@ -1,0 +1,83 @@
+.documents{
+	display:flex;
+	align-items:center;
+	flex-wrap:wrap;
+	margin-right:-15px;
+}
+
+.documents .document{
+	border-radius:0.3rem;
+	margin-right:15px;
+	display:flex;
+	justify-content:center;
+	align-items:center;
+	flex-direction:column;
+}
+
+.documents .document svg.green{
+	background:transparent !important;
+	color:#00c27b;
+}
+
+.documents .document svg.red{
+	background:transparent !important;
+	color:#db5565;
+}
+
+.documents .add button,
+.images .add button{
+	background:transparent !important;
+	color:var(--black);
+	box-shadow:none;
+}
+
+.images{
+	display:flex;
+	align-items:center;
+	flex-wrap:wrap;
+	margin-right:-15px;
+}
+
+.images .image{
+	height:150px;
+	border-radius:0.3rem;
+	margin-right:15px;
+}
+
+.images .image img{
+	height:100%;
+}
+
+.row.flex-aic{
+	flex-wrap:wrap;
+}
+
+.veiculo{
+	padding:2rem;
+	border-radius:0.3rem;
+	box-shadow:0px 0px 10px #999;
+}
+
+.plano{
+	padding:2rem 1rem;
+	border-radius:0.3rem;
+	box-shadow:0px 0px 10px #999;
+	display:flex;
+	justify-content:center;
+	align-items:center;
+	flex-direction:column;
+	margin-bottom:15px;
+}
+
+.plano img{
+	width:50%;
+	margin-bottom:15px;
+}
+
+@media all and ( max-width:600px ){
+
+	.row.flex-aic{
+		margin-bottom:15px;
+	}
+
+}

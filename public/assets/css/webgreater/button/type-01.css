@@ -1,0 +1,199 @@
+/*~~ Button Type 01 Start Here ~~*/
+
+.button.type-01{
+    border-radius:0.25rem;
+}
+
+/*~~ Button Type 01 End Here ~~*/
+
+/*~~ Button Type 01 - Sizes Start Here ~~*/
+
+.button.type-01.sm{
+    padding:2px 5px !important;
+    font-size:11px;
+}
+
+.button.type-01.md{
+    padding:15px 25px !important;
+    font-size:14px;
+}
+
+.button.type-01.lg{
+    padding:25px 35px !important;
+    font-size:18px;
+}
+
+/*~~ Button Type 01 - Sizes End Here ~~*/
+
+/*~~ Button Type 01 Themes Start Here ~~*/
+
+.button.type-01.white{
+    background:var(--white);
+    border-color:var(--white);
+    color:var(--white);
+}
+
+.button.type-01.white:hover{
+    background:var(--white-hover);
+    border-color:var(--white-hover);
+    color:var(--white-hover);
+}
+
+.button.type-01.white:active{
+    background:var(--white-active);
+    border-color:var(--white-active);
+    color:var(--white-active);
+}
+
+.button.type-01.white:focus{
+    background:var(--white-focus);
+    border-color:var(--white-focus);
+    color:var(--white-focus);
+}
+
+.button.type-01.default{
+    background:var(--default);
+    border-color:var(--default);
+    color:var(--white);
+}
+
+.button.type-01.default:hover{
+    background:var(--default-hover);
+    border-color:var(--default-hover);
+    color:var(--white);
+}
+
+.button.type-01.default:active{
+    background:var(--default-active);
+    border-color:var(--default-active);
+    color:var(--white);
+}
+
+.button.type-01.default:focus{
+    background:var(--default-focus);
+    border-color:var(--default-focus);
+    color:var(--white);
+}
+
+.button.type-01.default.outline,
+.button.type-01.default.double{
+    color:var(--white);
+}
+
+.button.type-01.primary{
+    background:var(--primary);
+    border-color:var(--primary);
+    color:var(--white);
+}
+
+.button.type-01.primary:hover{
+    background:var(--primary-hover);
+    border-color:var(--primary-hover);
+    color:var(--white);
+}
+
+.button.type-01.primary:active{
+    background:var(--primary-active);
+    border-color:var(--primary-active);
+    color:var(--white);
+}
+
+.button.type-01.primary:focus{
+    background:var(--primary-focus);
+    border-color:var(--primary-focus);
+    color:var(--white);
+}
+
+.button.type-01.primary.outline,
+.button.type-01.primary.double{
+    color:var(--white);
+}
+
+.button.type-01.secondary{
+    background:var(--secondary);
+    border-color:var(--secondary);
+    color:var(--black);
+}
+
+.button.type-01.secondary:hover{
+    background:var(--secondary-hover);
+    border-color:var(--secondary-hover);
+    color:var(--black);
+}
+
+.button.type-01.secondary:active{
+    background:var(--secondary-active);
+    border-color:var(--secondary-active);
+    color:var(--black);
+}
+
+.button.type-01.secondary:focus{
+    background:var(--secondary-focus);
+    border-color:var(--secondary-focus);
+    color:var(--black);
+}
+
+.button.type-01.secondary.outline,
+.button.type-01.secondary.double{
+    color:var(--secondary);
+}
+
+.button.type-01.third{
+    background:var(--third);
+    border-color:var(--third);
+    color:var(--black);
+}
+
+.button.type-01.third:hover{
+    background:var(--third-hover);
+    border-color:var(--third-hover);
+    color:var(--black);
+}
+
+.button.type-01.third:active{
+    background:var(--third-active);
+    border-color:var(--third-active);
+    color:var(--black);
+}
+
+.button.type-01.third:focus{
+    background:var(--third-focus);
+    border-color:var(--third-focus);
+    color:var(--black);
+}
+
+.button.type-01.third.outline,
+.button.type-01.third.double{
+    color:var(--third);
+}
+
+.button.type-01.fourth{
+    background:var(--fourth);
+    border-color:var(--fourth);
+    color:var(--black);
+}
+
+.button.type-01.fourth:hover{
+    background:var(--fourth-hover);
+    border-color:var(--fourth-hover);
+    color:var(--black);
+}
+
+.button.type-01.fourth:active{
+    background:var(--fourth-active);
+    border-color:var(--fourth-active);
+    color:var(--black);
+}
+
+.button.type-01.fourth:focus{
+    background:var(--fourth-focus);
+    border-color:var(--fourth-focus);
+    color:var(--black);
+}
+
+.button.type-01.fourth.outline,
+.button.type-01.fourth.double{
+    color:var(--fourth);
+}
+
+/*~~ Button Type 01 Themes End Here ~~*/

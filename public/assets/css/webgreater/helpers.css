@@ -1,0 +1,31 @@
+/*~~ Helpers Section Start Here ~~*/
+
+.clear{
+    clear:both;
+}
+
+.bg-default{
+    background:var(--default);
+}
+
+.bg-primary{
+    background:var(--primary);
+}
+
+.bg-secondary{
+    background:var(--secondary);
+}
+
+.bg-third{
+    background:var(--third);
+}
+
+.bg-fourth{
+    background:var(--fourth);
+}
+
+.bg-light-grey{
+    background:var(--light-grey);
+}
+
+/*~~ Helpers Section Start Here ~~*/

@@ -1,0 +1,83 @@
+.section{
+    background-size:cover;
+    /*background-attachment:fixed;*/
+    background-position:center;
+}
+
+.section.bg-grey{
+    background:#f5f5f5;
+}
+
+.section.md{
+    padding:50px 0px;
+}
+
+.section#sobre-nos{
+    padding:0px;
+}
+
+.section#sobre-nos .container-fluid{
+    background-size:cover;
+    /*background-attachment:fixed;*/
+    background-position:top left;
+    padding:100px 70px;
+}
+
+.section#beneficios h2{
+    font-family:Lato-Light;
+}
+
+.section#beneficios .icon{
+    height:100px;
+    display:flex;
+    align-items:flex-end;
+}
+
+.section#beneficios .icon img{
+    width:90px;
+}
+
+.section#beneficios .body{
+    /*height:250px;*/
+}
+
+.section#beneficios .row.lg{
+    margin-left:-75px;
+    margin-right:-75px;
+}
+
+.section#beneficios .row.lg > div{
+    padding-left:75px;
+    padding-right:75px;
+}
+
+@media all and ( max-width:992px ){
+
+    .section .container-fluid{
+        padding-left:75px !important;
+        padding-right:75px !important;
+    }
+
+}
+
+@media all and ( max-width:768px ){
+
+    .section .container-fluid{
+        padding-left:25px !important;
+        padding-right:25px !important;
+    }
+
+    .section#sobre-nos h2{
+        font-size:48px;
+    }
+
+}
+
+@media all and ( max-width:576px ){
+
+    .section .container-fluid{
+        padding-left:25px !important;
+        padding-right:15px !important;
+    }
+
+}
