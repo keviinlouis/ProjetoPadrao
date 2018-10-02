@@ -14,9 +14,7 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @var string
      */
-    protected $namespaceWeb = 'App\Http\Controllers\Web';
-    protected $namespaceUtils = 'App\Http\Controllers\Utils';
-    //TODO Criar namespaces para cada tipo acessavel no sistema
+    protected $namespace = 'App\Http\Controllers';
 
     /**
      * Define your route model bindings, pattern filters, etc.
@@ -25,6 +23,8 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        //
+
         parent::boot();
     }
 
@@ -39,6 +39,7 @@ class RouteServiceProvider extends ServiceProvider
 
         $this->mapWebRoutes();
 
+        //
     }
 
     /**
@@ -51,10 +52,8 @@ class RouteServiceProvider extends ServiceProvider
     protected function mapWebRoutes()
     {
         Route::middleware('web')
-             ->namespace($this->namespaceWeb)
+             ->namespace($this->namespace)
              ->group(base_path('routes/web.php'));
-
-
     }
 
     /**
@@ -68,12 +67,7 @@ class RouteServiceProvider extends ServiceProvider
     {
         Route::prefix('api')
              ->middleware('api')
-             ->namespace($this->namespaceUtils)
-             ->group(base_path('routes/utils.php'));
-
-        //TODO Configurar Rotas para tipos acesaveis no sistema
-        // É recomendavel separar as rotas para cada tipo de usuario que irá acessar o sistema
-        // Deixar a utils para acesso comum entre os usuarios
-        // Caso não queira, apenas utilize as rotas web e remova a configuração acima
+             ->namespace($this->namespace)
+             ->group(base_path('routes/api.php'));
     }
 }

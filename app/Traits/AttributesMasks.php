@@ -66,7 +66,7 @@ trait AttributesMasks
      * @param string $cep
      * @return string
      */
-    public function makeMaskCep(string $cep): string
+    public function makeMaskZipCode(string $cep): string
     {
         return $this->makeMask($cep, '#####-###');
     }

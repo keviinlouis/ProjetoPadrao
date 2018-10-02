@@ -4,8 +4,8 @@ namespace App\Providers;
 
 use App\Entities\Arquivo;
 use App\Entities\Endereco;
-use App\Observers\ArquivoObserver;
-use App\Observers\EnderecoObserver;
+use App\Observers\FileObserver;
+use App\Observers\AddressObserver;
 use Illuminate\Support\ServiceProvider;
 
 class ObserversProvider extends ServiceProvider
@@ -17,8 +17,8 @@ class ObserversProvider extends ServiceProvider
      */
     public function boot()
     {
-        Arquivo::observe(ArquivoObserver::class);
-        Endereco::observe(EnderecoObserver::class);
+        Arquivo::observe(FileObserver::class);
+        Endereco::observe(AddressObserver::class);
     }
 
     /**

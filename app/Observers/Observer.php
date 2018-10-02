@@ -36,7 +36,7 @@ abstract class Observer
      * @param Model $model
      * @return bool
      */
-    public function isNotEqual($field, Model $model)
+    public function isDifferent($field, Model $model)
     {
         return !$this->isEqual($field, $model);
     }

@@ -1,5 +1,8 @@
 <?php
 
+use Monolog\Handler\StreamHandler;
+use Monolog\Handler\SyslogUdpHandler;
+
 return [
 
     /*
@@ -25,14 +28,15 @@ return [
     | you a variety of powerful log handlers / formatters to utilize.
     |
     | Available Drivers: "single", "daily", "slack", "syslog",
-    |                    "errorlog", "custom", "stack"
+    |                    "errorlog", "monolog",
+    |                    "custom", "stack"
     |
     */
 
     'channels' => [
         'stack' => [
             'driver' => 'stack',
-            'channels' => ['single', 'information'],
+            'channels' => ['daily'],
         ],
 
         'single' => [
@@ -41,41 +45,17 @@ return [
             'level' => 'debug',
         ],
 
-        'information' => [
-            'driver' => 'single',
-            'path' => storage_path('logs/information.log'),
-            'level' => 'debug',
-        ],
-
-        'exceptions' => [
-            'driver' => 'single',
-            'path' => storage_path('logs/exceptions.log'),
-            'level' => 'debug',
-        ],
-
-        'notifications' => [
-            'driver' => 'single',
-            'path' => storage_path('logs/notifications.log'),
-            'level' => 'debug',
-        ],
-
-        'recuperacao-senha' => [
-            'driver' => 'single',
-            'path' => storage_path('logs/recuperacao_senha.log'),
-            'level' => 'debug',
-        ],
-
-        'moip' => [
-            'driver' => 'single',
-            'path' => storage_path('logs/moip.log'),
-            'level' => 'debug',
-        ],
-
         'daily' => [
             'driver' => 'daily',
             'path' => storage_path('logs/laravel.log'),
             'level' => 'debug',
-            'days' => 7,
+            'days' => 14,
+        ],
+
+        'geocode' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/geocode.log'),
+            'level' => 'debug',
         ],
 
         'slack' => [
@@ -84,6 +64,24 @@ return [
             'username' => 'Laravel Log',
             'emoji' => ':boom:',
             'level' => 'critical',
+        ],
+
+        'papertrail' => [
+            'driver'  => 'monolog',
+            'level' => 'debug',
+            'handler' => SyslogUdpHandler::class,
+            'handler_with' => [
+                'host' => env('PAPERTRAIL_URL'),
+                'port' => env('PAPERTRAIL_PORT'),
+            ],
+        ],
+
+        'stderr' => [
+            'driver' => 'monolog',
+            'handler' => StreamHandler::class,
+            'with' => [
+                'stream' => 'php://stderr',
+            ],
         ],
 
         'syslog' => [

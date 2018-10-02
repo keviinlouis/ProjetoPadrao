@@ -12,7 +12,6 @@ namespace App\Services;
 use Illuminate\Http\Response;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
-use Image;
 use Storage;
 use URL;
 
@@ -238,7 +237,7 @@ class FileService
         Storage::exists($toPath) ?: Storage::makeDirectory($toPath);
 
         if (!Storage::exists($fromPath) && !Storage::exists($toPath)) {
-            throw new \Exception('Arquivo não encontrado', Response::HTTP_NOT_FOUND);
+            throw new \Exception(__('messages.arquivo_nao_encontrado'), Response::HTTP_NOT_FOUND);
         }
 
         if (!Storage::exists($toPath) && !Storage::move($fromPath, $toPath)) {
@@ -270,7 +269,6 @@ class FileService
      * @param $height
      * @param $fileName
      * @param $newName
-     * @param $pathFrom
      * @param $pathSave
      * @return bool|string
      */
@@ -282,8 +280,10 @@ class FileService
             $pathFile = storage_path('app/' . $fileName);
 
             if(!is_file($pathFile)){
-                throw new \Exception('Arquivo não encontrado', Response::HTTP_NOT_FOUND);
+                throw new \Exception(__('messages.arquivo_nao_encontrado'), Response::HTTP_NOT_FOUND);
             }
+
+            \Storage::setVisibility($pathFile, '755');
 
             $img = Image::make($pathFile);
 
@@ -303,11 +303,11 @@ class FileService
             $pathSave = trim($pathSave, '/');
 
             $pathSave = storage_path('app/' . $pathSave);
-
             $img->save($pathSave.'/'.$newName);
 
             return $newName;
         } catch (\Exception $e) {
+
             $this->lastErrorMsg = $e->getMessage();
             return false;
         }
@@ -337,7 +337,7 @@ class FileService
     {
 
         if (!Storage::exists($fromPath) && !Storage::exists($toPath)) {
-            throw new \Exception('Arquivo não encontrado', Response::HTTP_NOT_FOUND);
+            throw new \Exception(__('messages.arquivo_nao_encontrado'), Response::HTTP_NOT_FOUND);
         }
 
         if (!Storage::exists($toPath) && !Storage::copy($fromPath, $toPath)) {
@@ -354,7 +354,12 @@ class FileService
      */
     public function url(string $path): string
     {
-        return URL::to(Storage::url($path));
+        $storagePath = Storage::url($path);
+
+        if(env('APP_ENV') == 'local'){
+            return URL::to($storagePath);
+        }
+        return $storagePath;
     }
 
 
@@ -373,6 +378,4 @@ class FileService
     {
         return $this->lastErrorMsg;
     }
-
-
 }

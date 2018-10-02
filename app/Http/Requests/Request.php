@@ -13,7 +13,7 @@ use Illuminate\Http\Request as RequestBase;
 
 class Request extends RequestBase
 {
-    public function __construct(\Illuminate\Http\Request $request)
+    public function __construct(RequestBase $request)
     {
 
         parent::__construct(

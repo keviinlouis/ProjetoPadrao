@@ -2,7 +2,7 @@
 
 namespace App\Http\Resources;
 
-use App\Entities\User;
+use App\Entities\BaseUser;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
@@ -10,8 +10,23 @@ use Illuminate\Database\Eloquent\Model;
 
 abstract class Resource extends JsonResource
 {
+    /**
+     * Field to check if is a collection
+     * @var bool
+     */
     private $isCollection;
+
+    /**
+     * Field to check if needs to send JWT token with the response
+     * @var bool
+     */
     protected $withToken = false;
+
+    /**
+     * Field to send a message with the response
+     * @var string
+     */
+    protected $message;
 
     /**
      * Resource constructor.
@@ -45,8 +60,12 @@ abstract class Resource extends JsonResource
             $response = $this->extractPaginator($response);
         }
 
-        if($this->withToken && !$this->isCollection && $this->resource instanceof User){
+        if($this->withToken && !$this->isCollection && $this->resource instanceof BaseUser){
             $response['token'] = \JWTAuth::fromUser($this->resource);
+        }
+
+        if($this->message){
+            $response['message'] = $this->message;
         }
 
 
@@ -54,10 +73,11 @@ abstract class Resource extends JsonResource
     }
 
     /**
+     * Function to map the collection and return the ToItemOfCollection
      * @param Collection|LengthAwarePaginator $collection
      * @return array
      */
-    public function toCollection($collection)
+    public function toCollection($collection): array
     {
         return $collection->map(function ($resource) {
             return $this->toItemOfCollection($resource);
@@ -65,22 +85,30 @@ abstract class Resource extends JsonResource
     }
 
     /**
+     * Function do map the resource in collection
      * @param Model $resource
      * @return array
      */
-    public function toItemOfCollection($resource)
+    public function toItemOfCollection($resource): array
     {
         return $this->toResource($resource);
     }
 
     /**
+     * Function to map the resource case is not a collection
      * @param Model $resource
      * @return array
      */
-    abstract public function toResource($resource);
+    abstract public function toResource($resource): array;
 
 
-    public function extractPaginator($response)
+    /**
+     * Function do extract paginator from
+     * @param $response
+     *
+     * @return array
+     */
+    public function extractPaginator($response): array
     {
         $paginator = (object) $this->resource->toArray();
 

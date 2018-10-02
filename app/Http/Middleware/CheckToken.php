@@ -32,9 +32,9 @@ class CheckToken extends BaseMiddleware
         Config::set('auth.defaults.guard', $guard);
 
         try {
-            $user = $this->auth->parseToken()->getPayload()['sub'];
+            $payload = $this->auth->parseToken()->getPayload();
 
-            if (!$this->checkModels($user->class, $guard) || !auth()->guard($guard)->onceUsingId($user->id)) { // Check user not found. Check token has expired.
+            if (!$this->checkModels($payload['class'], $guard) || !auth()->guard($guard)->onceUsingId($payload['sub'])) { // Check user not found. Check token has expired.
                 throw new UnauthorizedHttpException('jwt-auth', 'Usuario não encontrado'); //Se der problema com o token, virá um header chamado WWW-Authenticate com o valor de jwt-auth
             }
             return $next($request); // Se o usuario for autenticado e logado com token válido, continua request

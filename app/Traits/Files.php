@@ -23,4 +23,9 @@ trait Files
     {
         !\Storage::exists($this->getPathFiles())?:\Storage::deleteDirectory($this->getPathFiles());
     }
+
+    public function getPublicPathWithFile(string $string)
+    {
+        return $this->getPublicPathFiles().'/'.$string;
+    }
 }

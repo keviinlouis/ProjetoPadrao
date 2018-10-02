@@ -25,7 +25,7 @@ return [
         |
         */
 
-        'path' => app_path('Entities'),
+        'path' => app_path('Models'),
 
         /*
         |--------------------------------------------------------------------------
@@ -38,7 +38,7 @@ return [
         |
         */
 
-        'namespace' => 'App\Entities',
+        'namespace' => 'App\Models',
 
         /*
         |--------------------------------------------------------------------------
@@ -52,7 +52,7 @@ return [
         |
         */
 
-        'parent' => App\Entities\Entity::class,
+        'parent' => App\Models\BaseModel::class,
 
         /*
         |--------------------------------------------------------------------------
@@ -263,6 +263,7 @@ return [
 
         'except' => [
             'migrations',
+            'reset_*'
         ],
     ],
 
