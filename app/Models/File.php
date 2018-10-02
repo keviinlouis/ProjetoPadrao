@@ -2,8 +2,42 @@
 namespace App\Entities;
 
 use App\Models\BaseModel;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 
+/**
+ * App\Entities\File
+ *
+ * @property int $id
+ * @property string $name
+ * @property string|null $extension
+ * @property string $path
+ * @property string|null $url
+ * @property string|null $type
+ * @property string|null $description
+ * @property string $model_type
+ * @property int $model_id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read mixed $name_thumb
+ * @property-read string $name_with_extension
+ * @property-read mixed $path_thumb
+ * @property-read mixed $path_without_name
+ * @property-read mixed $url_thumb
+ * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $model
+ * @method static \Illuminate\Database\Eloquent\Builder|File whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|File whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|File whereExtension($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|File whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|File whereModelId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|File whereModelType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|File whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|File wherePath($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|File whereType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|File whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|File whereUrl($value)
+ * @mixin \Eloquent
+ */
 class File extends BaseModel
 {
     const TYPES_IMAGE = ['jpg', 'jpeg', 'png', 'gif', 'bmp'];
@@ -17,8 +51,8 @@ class File extends BaseModel
 
 
     protected $casts = [
-        'tipo' => 'int',
-        'entidade_id' => 'int'
+        'type' => 'int',
+        'model_id' => 'int'
     ];
     protected $fillable = [
         'name',
@@ -32,12 +66,18 @@ class File extends BaseModel
     ];
 
     /**
+     * The morph relation
      * @return \Illuminate\Database\Eloquent\Relations\MorphTo
      */
-    public function model()
+    public function model(): MorphTo
     {
         return $this->morphTo();
     }
+
+    /**
+     * Mutator to get url of the thumbnail
+     * @return string
+     */
     public function getUrlThumbAttribute(): string
     {
         $url = explode('/', $this->url);
@@ -46,6 +86,11 @@ class File extends BaseModel
         $urlThumb = implode('/', $url);
         return $urlThumb;
     }
+
+    /**
+     * Mutator to get the path of the thumbnail
+     * @return string
+     */
     public function getPathThumbAttribute(): string
     {
         $path = explode('/', $this->path);
@@ -55,65 +100,112 @@ class File extends BaseModel
         return $pathThumb;
     }
     /**
+     * Mutator to get the name with the extension
      * @return string
      */
     public function getNameWithExtensionAttribute()
     {
-        $extensao = str_replace('.', '', $this->extension);
-        return $this->nome.'.'.$extensao;
+        $extension = str_replace('.', '', $this->extension);
+        return $this->name.'.'.$extension;
     }
-    public function getPathWithoutNameAttribute()
+
+    /**
+     * Mutator to get the path without the name
+     * @return string
+     */
+    public function getPathWithoutNameAttribute(): string
     {
-        return str_replace($this->nome, '', $this->path);
+        return str_replace($this->name, '', $this->path);
     }
-    public function getNameThumbAttribute()
+
+    /**
+     * Mutator to get the name of the thumbnail
+     * @return string
+     */
+    public function getNameThumbAttribute(): string
     {
         return self::THUMB_PREFIX.$this->name;
     }
-    public function hasThumb()
+
+    /**
+     * Check if the file exists
+     * @return bool
+     */
+    public function fileExists(): bool
     {
-        return \Storage::exists($this->pathThumb);
+        return \Storage::exists($this->path);
     }
-    public function removeFile()
+
+    /**
+     * Check if has Thumbnail
+     * @return bool
+     */
+    public function hasThumb(): bool
+    {
+        return \Storage::exists($this->path_thumb);
+    }
+
+    /**
+     * Delete the file by path
+     * @return bool
+     */
+    public function removeFile(): bool
     {
         return \Storage::delete($this->path);
     }
-    public function removeThumb()
+
+    /**
+     * Delete the thumbnail by path
+     * @return bool
+     */
+    public function removeThumb(): bool
     {
-        return $this->hasThumb() && \Storage::delete($this->pathThumb);
+        return $this->hasThumb() && \Storage::delete($this->path_thumb);
     }
     /**
+     * Move the file to passed path
      * @param $path
      * @return $this
      * @throws \Exception
      */
-    public function moveTo($path)
+    public function moveTo($path): self
     {
-        $this->checkDestinoExists($path);
-        \Storage::move($this->path, $path.'/'.$this->name_with_extension);
+        $this->checkDestinationPathExistsAndCreate($path);
+
+        \Storage::move($this->path, $path.DIRECTORY_SEPARATOR.$this->name_with_extension);
+
         return $this;
     }
     /**
+     * Copy file to passed path
      * @param $path
      * @return $this
      * @throws \Exception
      */
-    public function copyTo($path)
+    public function copyTo($path): self
     {
-        $this->checkDestinoExists($path);
-        \Storage::copy($this->path, $path.'/'.$this->name_with_extension);
+        $this->checkDestinationPathExistsAndCreate($path);
+
+        \Storage::copy($this->path, $path.DIRECTORY_SEPARATOR.$this->name_with_extension);
+
         return $this;
     }
     /**
+     * Check if destination path exists and create if not exists
      * @param $path
      * @throws \Exception
      */
-    public function checkDestinoExists($path)
+    public function checkDestinationPathExistsAndCreate($path)
     {
         if(!\Storage::exists($path)){
             \Storage::makeDirectory($path);
         }
     }
+
+    /**
+     * Check if is a image
+     * @return bool
+     */
     public function isImage()
     {
         return in_array($this->extension, self::TYPES_IMAGE) !== false;
