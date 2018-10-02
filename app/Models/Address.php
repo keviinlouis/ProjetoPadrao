@@ -1,16 +1,51 @@
 <?php
-/**
- * Created by Reliese Model.
- * Date: Wed, 11 Apr 2018 11:06:51 -0300.
- */
 
 namespace App\Models;
 
 use App\Models\BaseModel as Eloquent;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Jcf\Geocode\Exceptions\EmptyArgumentsException;
 use Jcf\Geocode\Geocode;
 
 
+/**
+ * App\Models\Address
+ *
+ * @property int $id
+ * @property string $zip_code
+ * @property string $street
+ * @property int $number
+ * @property string|null $complement
+ * @property string|null $neighborhood
+ * @property string $city
+ * @property string $state
+ * @property string|null $country
+ * @property float|null $latitude
+ * @property float|null $longitude
+ * @property string $model_type
+ * @property int $model_id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read string $full_address_display
+ * @property-read mixed $zip_code_display
+ * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $model
+ * @method static \Illuminate\Database\Eloquent\Builder|Address whereCity($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Address whereComplement($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Address whereCountry($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Address whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Address whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Address whereLatitude($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Address whereLongitude($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Address whereModelId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Address whereModelType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Address whereNeighborhood($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Address whereNumber($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Address whereState($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Address whereStreet($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Address whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Address whereZipCode($value)
+ * @mixin \Eloquent
+ */
 class Address extends Eloquent
 {
     public static $snakeAttributes = false;
@@ -35,20 +70,29 @@ class Address extends Eloquent
         'model_type',
     ];
 
-    public function model()
+    /**
+     * The morph relation
+     * @return MorphTo
+     */
+    public function model(): MorphTo
     {
         return $this->morphTo('model');
     }
 
-    public function getZipCodeDisplayAttribute()
+    /**
+     * Get the zip code with mask
+     * @return string
+     */
+    public function getZipCodeDisplayAttribute(): string
     {
-        return $this->makeMaskZipCode($this->zipCode);
+        return $this->makeMaskZipCode($this->zip_code);
     }
 
     /**
+     * Get the full address string
      * @return string
      */
-    public function getFullAddressDisplayAttribute()
+    public function getFullAddressDisplayAttribute(): string
     {
         $endereco = $this->street . ', ' . $this->number . ', ';
         if ($this->neighborhood) {
@@ -58,27 +102,37 @@ class Address extends Eloquent
         return $endereco;
     }
 
-    public function hasDadosAddresss()
+    /**
+     * Check if has minimum of address to exists
+     * @return bool
+     */
+    public function hasDadosAddress(): bool
     {
         return $this->street && $this->number && $this->city && $this->state;
     }
 
-    public function hasLatLong()
+    /**
+     * Check if has Latitude and Longitude
+     * @return bool
+     */
+    public function hasLatLong(): bool
     {
         return $this->latitude && $this->longitude;
     }
 
     /**
-     * @return self|bool
+     * Load the latitude and longitude by the full address
+     * @return Address
      */
-    public function loadLatLong()
+    public function loadLatLong(): self
     {
         try {
             $response = Geocode::make()->address($this->full_address_display);
             if ($response) {
                 $this->latitude = $response->latitude();
                 $this->longitude = $response->longitude();
-                $this->updateAddressByLatLong();
+
+                $this->save();
             }
         } catch (EmptyArgumentsException $e) {
             \Log::channel('geocode')->error(
@@ -89,7 +143,11 @@ class Address extends Eloquent
         return $this;
     }
 
-    public function updateAddressByLatLong()
+    /**
+     * Load the full address by the latitude and longitude
+     * @return Address
+     */
+    public function loadAddressByLatLong(): self
     {
         try {
             $endereco = Geocode::make()->latLng($this->latitude, $this->longitude);
@@ -97,9 +155,12 @@ class Address extends Eloquent
                 throw new \Exception();
             }
             $data = self::getDataAddressByGeocodeResponse($endereco->response);
+
             $data['latitude'] = $this->latitude;
             $data['longitude'] = $this->longitude;
+
             $this->fill($data);
+
             $this->save();
         } catch (\Exception $e) {
             \Log::channel('geocode')->error(
@@ -110,9 +171,18 @@ class Address extends Eloquent
                 ]
             );
         }
+
+        return $this;
     }
 
-    static public function getDataAddressByGeocodeResponse($response)
+    /**
+     * Build a full Address model by the data response
+     *
+     * @param $response
+     *
+     * @return array
+     */
+    static public function getDataAddressByGeocodeResponse($response): array
     {
         $data = [
             'zip_code' => self::findFieldInGeocodeResponse($response, 'zip_code'),
@@ -126,7 +196,15 @@ class Address extends Eloquent
         return $data;
     }
 
-    static public function findFieldInGeocodeResponse($response, $field, $longName = false)
+    /**
+     * Find the field passed by geocode response
+     * @param $response
+     * @param $field
+     * @param bool $longName
+     *
+     * @return null|string
+     */
+    static public function findFieldInGeocodeResponse($response, $field, $longName = false): ?string
     {
         foreach ($response->address_components as $component) {
             foreach ($component->types as $type) {
@@ -138,7 +216,13 @@ class Address extends Eloquent
         return null;
     }
 
-    static public function guessField($field)
+    /**
+     * Guess the field passed by function to google field response
+     * @param $field
+     *
+     * @return null|string
+     */
+    static public function guessField($field): ?string
     {
         switch ($field) {
             case 'rua':
@@ -171,7 +255,7 @@ class Address extends Eloquent
             case 'pais':
                 return 'country';
             default:
-                return '';
+                return null;
         }
     }
 }
