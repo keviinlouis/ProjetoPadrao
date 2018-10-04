@@ -131,4 +131,15 @@ abstract class Resource extends JsonResource
 
         return $response;
     }
+    
+    protected function getValueOrNull($value, $default = null, $function = null)
+    {
+        if (blank($value)) {
+            return $default;
+        }
+        if ($function && method_exists($value, $function)) {
+            return $value->$function();
+        }
+        return $value;
+    }
 }
