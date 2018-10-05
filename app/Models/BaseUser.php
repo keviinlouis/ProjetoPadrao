@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entities;
+namespace App\Models;
 
 use App\Traits\AttributesMasks;
 use App\Traits\Files;
@@ -18,10 +18,7 @@ abstract class BaseUser extends Authenticatable implements JWTSubject
      */
     public function getJWTIdentifier()
     {
-        return [
-            'id' => $this->getKey(),
-            'class' => $this->getClassAuth()
-        ];
+        return $this->getKey();
     }
 
     /**
@@ -29,8 +26,8 @@ abstract class BaseUser extends Authenticatable implements JWTSubject
      */
     public function getJWTCustomClaims() : array
     {
-        return [];
+        return [
+            'class' => static::class
+        ];
     }
-
-    abstract function getClassAuth():string;
 }
