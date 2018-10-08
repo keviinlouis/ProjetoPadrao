@@ -2,7 +2,7 @@
 
 namespace App\Http\Resources;
 
-use App\Entities\BaseUser;
+use App\Models\BaseUser;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
@@ -101,6 +101,10 @@ abstract class Resource extends JsonResource
      */
     abstract public function toResource($resource): array;
 
+    public function setMessage(string $message): void
+    {
+        $this->message = $message;
+    }
 
     /**
      * Function do extract paginator from
@@ -131,7 +135,7 @@ abstract class Resource extends JsonResource
 
         return $response;
     }
-    
+
     protected function getValueOrNull($value, $default = null, $function = null)
     {
         if (blank($value)) {
