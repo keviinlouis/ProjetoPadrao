@@ -37,7 +37,8 @@ class ${NAME} extends Controller
 
         \$model = \$this->${LOWER_CASE}Service->index(\$request->toCollection());
 
-        return new ${MODEL}Resource(\$model);
+        return ${MODEL}Resource::makeResource(\$model);
+
     }
 
 
@@ -53,7 +54,7 @@ class ${NAME} extends Controller
     {
         \$model = \$this->${LOWER_CASE}Service->login(\$request->toCollection());
 
-        return new ${MODEL}Resource(\$model, true);
+        return ${MODEL}Resource::makeResource(\$model)->withToken();
     }
 
     /**
@@ -65,7 +66,7 @@ class ${NAME} extends Controller
     {
         \$model = \$this->${LOWER_CASE}Service->show(auth()->id());
 
-        return new ${MODEL}Resource(\$model);
+        return ${MODEL}Resource::makeResource(\$model);
     }
 
     /**
@@ -80,7 +81,7 @@ class ${NAME} extends Controller
     {
         \$model = \$this->${LOWER_CASE}Service->store(\$request->toCollection());
 
-        return new ${MODEL}Resource(\$model, true);
+        return ${MODEL}Resource::makeResource(\$model)->withToken();
     }
 
     /**
@@ -93,7 +94,7 @@ class ${NAME} extends Controller
     {
         \$model = \$this->${LOWER_CASE}Service->show(\$id);
 
-        return new ${MODEL}Resource(\$model);
+        return ${MODEL}Resource::makeResource(\$model);
     }
 
     /**
@@ -107,7 +108,7 @@ class ${NAME} extends Controller
     {
         \$model = \$this->${LOWER_CASE}Service->update(\$request->toCollection(), auth()->id());
 
-        return new ${MODEL}Resource(\$model);
+        return ${MODEL}Resource::makeResource(\$model);
     }
 
     /**
@@ -120,7 +121,7 @@ class ${NAME} extends Controller
     {
         \$model = \$this->${LOWER_CASE}Service->delete(auth()->id());
 
-        return new ${MODEL}Resource(\$model);
+        return ${MODEL}Resource::makeResource(\$model);
     }
 
 #else
@@ -136,7 +137,7 @@ class ${NAME} extends Controller
     {
         \$model = \$this->${LOWER_CASE}Service->store(\$request->toCollection());
 
-        return new ${MODEL}Resource(\$model);
+        return ${MODEL}Resource::makeResource(\$model);
     }
 
     /**
@@ -149,7 +150,7 @@ class ${NAME} extends Controller
     {
         \$model = \$this->${LOWER_CASE}Service->show(\$id);
 
-        return new ${MODEL}Resource(\$model);
+        return ${MODEL}Resource::makeResource(\$model);
     }
 
     /**
@@ -164,7 +165,7 @@ class ${NAME} extends Controller
     {
         \$model = \$this->${LOWER_CASE}Service->update(\$request->toCollection(), \$id);
 
-        return new ${MODEL}Resource(\$model);
+        return ${MODEL}Resource::makeResource(\$model);
     }
 
     /**
@@ -178,7 +179,7 @@ class ${NAME} extends Controller
     {
         \$model = \$this->${LOWER_CASE}Service->delete(\$id);
 
-        return new ${MODEL}Resource(\$model);
+        return ${MODEL}Resource::makeResource(\$model);
     }
 #end
 }

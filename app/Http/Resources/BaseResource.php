@@ -109,13 +109,21 @@ abstract class BaseResource extends JsonResource
      */
     abstract public function toResource($resource): array;
 
-    public function setMessage(string $message): self
+    /**
+     * @param string $message
+     *
+     * @return static
+     */
+    public function setMessage(string $message)
     {
         $this->message = $message;
         return $this;
     }
 
-    public function withToken(): self
+    /**
+     * @return static
+     */
+    public function withToken()
     {
         $this->withToken = true;
         return $this;
@@ -163,6 +171,11 @@ abstract class BaseResource extends JsonResource
         return $value;
     }
 
+    /**
+     * @param $model
+     *
+     * @return static
+     */
     public static function makeResource($model)
     {
         return new static($model);
