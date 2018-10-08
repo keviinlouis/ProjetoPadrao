@@ -63,7 +63,8 @@
             "@php artisan package:discover --ansi",
             "@php -r \"file_exists('storage/logs/laravel.log') || fopen('storage/logs/laravel.log', 'x+');\"",
             "@php -r \"file_exists('storage/logs/exceptions.log') || fopen('storage/logs/exceptions.log', 'x+');\"",
-            "@php -r \"file_exists('storage/logs/geocode.log') || fopen('storage/logs/geocode.log', 'x+');\""
+            "@php -r \"file_exists('storage/logs/geocode.log') || fopen('storage/logs/geocode.log', 'x+');\"",
+            "@php -r \"file_exists('storage/logs/requests.log') || fopen('storage/logs/requests.log', 'x+');\""
         ]
     },
     "config": {

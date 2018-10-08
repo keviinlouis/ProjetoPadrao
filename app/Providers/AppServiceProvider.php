@@ -37,5 +37,34 @@ class AppServiceProvider extends ServiceProvider
         $this->app->extend(\Illuminate\Http\Request::class, function ($request) {
             return new Request($request);
         });
+
+        $this->makeRequestLog();
+    }
+
+    public function clearLang($lang)
+    {
+        return trim(
+            str_replace('(current)', '',
+                strtolower(
+                    str_replace('-', '_', $lang)
+                )
+            )
+        );
+    }
+
+    private function makeRequestLog(): void
+    {
+        if(env('APP_ENV') === 'production'){
+            return;
+        }
+        if (strpos(request()->getUri(), 'logs') === false || request()->getRequestUri() == '/') {
+            \Log::channel('requests')->info('Route: ' . request()->getRequestUri(), [
+                'IP: ' . request()->getClientIp(),
+                'Method: '. request()->method(),
+                'Headers: '. json_encode(request()->headers->all()),
+                'Body: ' . json_encode(request()->toArray()),
+
+            ]);
+        }
     }
 }
