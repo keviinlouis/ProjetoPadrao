@@ -24,7 +24,10 @@ class ${MODEL}Resource extends BaseResource
      */
     public function toResource(\$resource): array
     {
-       \$data = \$resource->toArray();
+       \$data = [
+            'id' => \$resource->getKey(),
+            //TODO Implementar dados
+       ];
 
        return \$data;
     }
