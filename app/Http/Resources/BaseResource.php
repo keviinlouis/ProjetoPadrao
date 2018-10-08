@@ -3,10 +3,10 @@
 namespace App\Http\Resources;
 
 use App\Models\BaseUser;
-use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Collection;
 
 abstract class BaseResource extends JsonResource
 {
@@ -30,6 +30,7 @@ abstract class BaseResource extends JsonResource
 
     /**
      * BaseResource constructor.
+     *
      * @param $resource Collection|LengthAwarePaginator|Model|Model[]
      */
     public function __construct($resource)
@@ -43,6 +44,7 @@ abstract class BaseResource extends JsonResource
      * Transform the resource into an array.
      *
      * @param  \Illuminate\Http\Request $request
+     *
      * @return array
      */
     public final function toArray($request)
@@ -53,18 +55,18 @@ abstract class BaseResource extends JsonResource
     public function with($request)
     {
         $response = [
-            'success' => true
+            'success' => true,
         ];
 
         if ($this->resource instanceof LengthAwarePaginator) {
             $response = $this->extractPaginator($response);
         }
 
-        if($this->withToken && !$this->isCollection && $this->resource instanceof BaseUser){
+        if ($this->withToken && !$this->isCollection && $this->resource instanceof BaseUser) {
             $response['token'] = \JWTAuth::fromUser($this->resource);
         }
 
-        if($this->message){
+        if ($this->message) {
             $response['message'] = $this->message;
         }
 
@@ -74,7 +76,9 @@ abstract class BaseResource extends JsonResource
 
     /**
      * Function to map the collection and return the ToItemOfCollection
+     *
      * @param Collection|LengthAwarePaginator $collection
+     *
      * @return array
      */
     public function toCollection($collection): array
@@ -86,7 +90,9 @@ abstract class BaseResource extends JsonResource
 
     /**
      * Function do map the resource in collection
+     *
      * @param Model $resource
+     *
      * @return array
      */
     public function toItemOfCollection($resource): array
@@ -96,31 +102,41 @@ abstract class BaseResource extends JsonResource
 
     /**
      * Function to map the resource case is not a collection
+     *
      * @param Model $resource
+     *
      * @return array
      */
     abstract public function toResource($resource): array;
 
-    public function setMessage(string $message): void
+    public function setMessage(string $message): self
     {
         $this->message = $message;
+        return $this;
+    }
+
+    public function withToken(): self
+    {
+        $this->withToken = true;
+        return $this;
     }
 
     /**
      * Function do extract paginator from
+     *
      * @param $response
      *
      * @return array
      */
     public function extractPaginator($response): array
     {
-        $paginator = (object) $this->resource->toArray();
+        $paginator = (object)$this->resource->toArray();
 
         $response['links'] = [
             'first_page_url' => $paginator->first_page_url,
             'last_page_url' => $paginator->last_page_url,
             'next_page_url' => $paginator->next_page_url,
-            'prev_page_url' => $paginator->prev_page_url
+            'prev_page_url' => $paginator->prev_page_url,
         ];
 
         $response['meta'] = [
@@ -130,7 +146,7 @@ abstract class BaseResource extends JsonResource
             'path' => $paginator->path,
             'per_page' => $paginator->per_page,
             'to' => $paginator->to,
-            'total' => $paginator->total
+            'total' => $paginator->total,
         ];
 
         return $response;
@@ -145,5 +161,10 @@ abstract class BaseResource extends JsonResource
             return $value->$function();
         }
         return $value;
+    }
+
+    public static function makeResource($model)
+    {
+        return new static($model);
     }
 }
