@@ -8,7 +8,7 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
 
-abstract class Resource extends JsonResource
+abstract class BaseResource extends JsonResource
 {
     /**
      * Field to check if is a collection
@@ -29,7 +29,7 @@ abstract class Resource extends JsonResource
     protected $message;
 
     /**
-     * Resource constructor.
+     * BaseResource constructor.
      * @param $resource Collection|LengthAwarePaginator|Model|Model[]
      */
     public function __construct($resource)
