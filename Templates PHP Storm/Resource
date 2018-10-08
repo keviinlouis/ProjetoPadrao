@@ -7,7 +7,7 @@
 namespace App\Http\Resources;
 
 
-use App\Entities$CONTRA_BARRA${MODEL};
+use App\Models$CONTRA_BARRA${MODEL};
 
 class ${MODEL}Resource extends BaseResource
 {

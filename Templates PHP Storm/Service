@@ -7,7 +7,7 @@
 
 namespace App\Services;
 
-use App\Entities$CONTRA_BARRA${MODEL};
+use App\Models$CONTRA_BARRA${MODEL};
 use App\Validators$CONTRA_BARRA${MODEL}Rules;
 #if (${IS_AUTH} == "TRUE" || ${IS_AUTH} == "true" || ${IS_AUTH} == "1")
 use Illuminate\Http\Response;

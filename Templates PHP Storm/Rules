@@ -7,7 +7,7 @@
 
 namespace App\Validators;
 
-use App\Entities$CONTRA_BARRA${MODEL};
+use App\Models$CONTRA_BARRA${MODEL};
 use Illuminate\Validation\Rule;
 
 
