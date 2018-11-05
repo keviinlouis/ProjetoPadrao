@@ -8,10 +8,11 @@ use App\Traits\Senha;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
+use App\Traits\ReflectionMethodsTrait;
 
 abstract class BaseUser extends Authenticatable implements JWTSubject
 {
-	use SoftDeletes, AttributesMasks, Senha, Files;
+	use SoftDeletes, AttributesMasks, Senha, Files, ReflectionMethodsTrait;
 
     /**
      * @return mixed
